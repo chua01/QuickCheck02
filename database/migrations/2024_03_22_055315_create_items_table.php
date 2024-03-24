@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->double('price1')->nullable();
+            $table->double('price2')->nullable();
+            $table->double('price3')->nullable();
+            $table->string('pic')->nullable();
+            $table->string('description')->nullable();
+            $table->double('quantity')->nullable();
+            $table->double('minlevel')->nullable();
+            $table->enum('unit', ['value1', 'value2', 'value3'])->nullable();
             $table->timestamps();
         });
     }
