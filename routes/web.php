@@ -51,7 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
 	Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-	Route::get('item', [ItemController::class, 'index'])->name('item');
+	Route::get('/item', [ItemController::class, 'index'])->name('item');
+	Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
+	Route::get('/item/show', [ItemController::class, 'show'])->name('posts.store');
 	
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');

@@ -16,4 +16,9 @@ class ItemController extends Controller
     {
         return view('manageuser.manage');
     }
+    
+    public function create()
+    {
+        return view('manageitem.create');
+    }
 }
