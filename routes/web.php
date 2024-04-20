@@ -24,6 +24,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
 
 Route::get('/', function () {
@@ -53,7 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 	Route::get('/item', [ItemController::class, 'index'])->name('item');
 	Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
-	Route::get('/item/show', [ItemController::class, 'show'])->name('posts.store');
+	Route::post('/item/store', [ItemController::class, 'store'])->name('item.store');
+	Route::get('/item/show', [ItemController::class, 'show'])->name('item.show');
+	Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
+	Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
 	
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');

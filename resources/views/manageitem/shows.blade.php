@@ -101,17 +101,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="example-select" class="form-control-label">unit</label>
-                                        <select class="form-control" name="unit" id="example-select">
-                                            <option value="pcs">pcs</option>
-                                            <option value="kg">kg</option>
-                                            <option value="meter">meter</option>
-                                            <option value="roll">roll</option>
-                                            <!-- Add more options as needed -->
-                                        </select>
+                                        <label for="example-text-input" class="form-control-label">unit</label>
+                                        <input class="form-control" type="text" name="unit">
                                     </div>
                                 </div>
-                                
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 1</label>

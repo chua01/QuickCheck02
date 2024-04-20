@@ -19,29 +19,34 @@
                 </div>
             </div>
             <div class="row">
-                @for ($i = 0; $i < 15; $i++)
+                @foreach ($items as $item)
                     <div class="col-md-3 mb-4">
                         <div class="card border border-1 position-relative">
-                            <a href="">
+                            <a href="#">
                                 <div class="card-header mx-4 p-3 text-center">
-                                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
-                                        <i class="fas fa-landmark opacity-10"></i>
-                                    </div>
+                                    <img src="{{ Storage::url($item->pic) }}" alt="Icon" class="opacity-10 rounded border " style="width: 8rem; height: 8rem;">
                                 </div>
+                                
+                                
                                 <div class="card-body pt-0 p-3 text-center">
-                                    <h6 class="text-center mb-0">Item name</h6>
-                                    <span class="text-xs">Item Id</span><br>
-                                    <span class="text-xs">RM 23.34</span>
+                                    <span class="text-center mb-0">
+                                        {{$item->name}}
+                                            <h6 >
+                                        </h6>
+                                        </span>
+                                    <span class="text-xs">{{$item->id}}</span><br>
+                                    <span class="text-xs">RM {{$item->price1}}</span>
                                     <hr class="horizontal dark my-3">
-                                    <h5 class="mb-0">10 pcs</h5>
+                                    <h5 class="mb-0">{{$item->quantity}} {{$item->unit}}</h5>
                                 </div>
                             </a>
                             <a class="position-absolute top-0 end-0 mt-2 me-2" href="#">
-                                <i class="fas fa-thumbtack"></i>
+                                <i class="fas fa-thumbtack" style="{{ (1==1 ? '' : 'color: red;') }}"></i>
                             </a>
+                            
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
             
             

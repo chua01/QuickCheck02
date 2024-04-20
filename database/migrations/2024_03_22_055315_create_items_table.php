@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->double('quantity')->nullable();
             $table->double('minlevel')->nullable();
-            $table->enum('unit', ['value1', 'value2', 'value3'])->nullable();
+            $table->enum('unit', ['pcs', 'kg', 'meter', 'roll'])->nullable();
             $table->timestamps();
         });
     }
