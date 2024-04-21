@@ -21,47 +21,51 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Role
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Contact
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Create Date</th>
+                                        Address</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @for($i = 0; $i<=5; $i++)
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-3 py-1">
-                                            <div>
-                                                <img src="./img/team-1.jpg" class="avatar me-3" alt="image">
+                                @foreach ($customers as $customer)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-3 py-1">
+                                                <div>
+                                                    <img src="./img/team-1.jpg" class="avatar me-3" alt="image">
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0">{{ $customer->name }}</h6>
+                                                    <p class="text-sm mb-0">{{ $customer->email }}</p>
+                                                </div>
                                             </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Admin</h6>
-                                                <P>sdfdf</P>
+                                        </td>
+                                        <td>
+                                            <p class="font-weight-bold mb-0">
+                                                {{ $customer->contact->first()->contactnumber }}</p>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <p class="text-sm font-weight-bold mb-0">{{ $customer->address->location }}</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $customer->address->code }}</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $customer->address->street }}</p>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $customer->address->state }}</p>
+                                        </td>
+                                        <td class="align-middle text-end">
+                                            <div class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                <p class="text-sm font-weight-bold mb-0">Edit</p>
+                                                <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm font-weight-bold mb-0">01231231231</p>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        <p class="text-sm font-weight-bold mb-0">Address<p>
-                                        <p class="text-sm font-weight-bold mb-0">SDFSDF<p>
-                                        <p class="text-sm font-weight-bold mb-0">SDFSDFSDFS<p>
-                                    </td>
-                                    <td class="align-middle text-end">
-                                        <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                            <p class="text-sm font-weight-bold mb-0">Edit</p>
-                                            <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                               @endfor
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

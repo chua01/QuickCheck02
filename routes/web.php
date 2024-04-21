@@ -26,6 +26,7 @@ use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SupplierController;
 
 Route::get('/', function () {
 	return redirect('/dashboard');
@@ -58,6 +59,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/item/show', [ItemController::class, 'show'])->name('item.show');
 	Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
 	Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
+	Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
+	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+	Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
 	
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'id',
         'name',
@@ -17,4 +17,14 @@ class Customer extends Model
         'pinned',
         'address_id',
     ];
+
+    public function contact()
+    {
+        return $this->hasMany(Contact::class, 'person_id')->where('type', 'customer');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
 }

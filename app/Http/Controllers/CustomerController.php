@@ -2,16 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Contact;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     //
-    public function index(){
-        return view('managecustomer.manage');
+    public function index()
+    {
+        $customers = Customer::with('contact','address')->get(); // Use get() instead of all()
+        // You can remove the dd() if you don't need to debug
+        // dd($customers); 
+        return view('managecustomer.manage', compact('customers'));
     }
-   
+    
     public function create(){
         return view('managecustomer.create');
     }
+   
+    public function store(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'contactno' => 'required',
+            'email' => 'required|email',
+            'location' => 'required|string|max:255',
+            'street' => 'required|string',
+            'state' => 'required|string',
+            'code' => 'required|string',
+        ]);
+    
+        // Handle file upload
+        if ($request->hasFile('pic')) {
+            $imagePath = $request->file('pic')->store('public/images'); // You can specify the folder where to store images
+            $validatedData['pic'] = $imagePath;
+        }
+    
+        // Create the address
+        $address = Address::create($validatedData);
+    
+        // Create the customer
+        $customerData = array_merge($validatedData, ['address_id' => $address->id]);
+        $customer = Customer::create($customerData);
+    
+        // Create the contact
+        $contactInfo = [
+            'contactnumber' => $validatedData['contactno'],
+            'person_id' => $customer->id,
+            'type' => 'customer',
+        ];
+        $contact = Contact::create($contactInfo);
+    
+        // Optionally, you can redirect the user after successful submission
+        return redirect()->route('customer')->with('success', 'Item added successfully!');
+    }
+    
 }

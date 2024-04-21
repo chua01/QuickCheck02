@@ -1,10 +1,10 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Add Customer'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Add Supplier'])
   
     <div class="container-fluid py-4">
-        <form method="POST" action="{{ route('customer.store') }}">
+        <form method="POST" action="{{ route('supplier.store') }}">
             @csrf
 
             <div class="row">
@@ -12,12 +12,12 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex align-items-center">
-                                <p class="text-uppercase mb-0">Customer information</p>
+                                <p class="text-uppercase mb-0">supplier information</p>
                                 <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class=" text-sm">Customer Information</p>
+                            <p class=" text-sm">supplier Information</p>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
