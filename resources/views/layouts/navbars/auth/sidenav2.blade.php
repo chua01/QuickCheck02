@@ -12,7 +12,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'user' ? 'active' : '' }}" href="{{ route('user') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-users text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Manage User</span>
                 </a>
@@ -20,7 +20,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'item' ? 'active' : '' }}" href="{{ route('item') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-box text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Manage Item</span>
                 </a>
@@ -28,7 +28,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'customer' ? 'active' : '' }}" href="{{ route('customer') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-users text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Manage Customer</span>
                 </a>
@@ -36,19 +36,45 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'supplier' ? 'active' : '' }}" href="{{ route('supplier') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-truck text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Manage Supplier</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}" href="{{ route('home') }}">
+                <a class="nav-link {{ Route::currentRouteName() == 'salesorder' ? 'active' : '' }}" href="{{ route('salesorder') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-file-invoice-dollar text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Manage Sales Order</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'report' ? 'active' : '' }}" href="">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-chart-bar text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Generate Report</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'note' ? 'active' : '' }}" href="">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-file-alt text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Credit/Debit Notes</span>
+                </a>
+            </li>
+
+            {{-- <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}" href="">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-tachometer-alt text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
     

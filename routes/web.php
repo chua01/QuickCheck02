@@ -26,6 +26,7 @@ use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 
 Route::get('/', function () {
@@ -53,16 +54,27 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
 	Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+	// item
 	Route::get('/item', [ItemController::class, 'index'])->name('item');
 	Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
 	Route::post('/item/store', [ItemController::class, 'store'])->name('item.store');
 	Route::get('/item/show', [ItemController::class, 'show'])->name('item.show');
+
+	// customer
 	Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
 	Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
 	Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+
+	// supplier
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
 	Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+	
+	// order
+	Route::get('/salesorder', [SalesOrderController::class, 'index'])->name('salesorder');
+	Route::get('/salesorder/create', [SalesOrderController::class, 'create'])->name('salesorder.create');
+	Route::post('/salesorder/store', [SupplierController::class, 'store'])->name('salesorder.store');
 	
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
