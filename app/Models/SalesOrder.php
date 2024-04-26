@@ -19,4 +19,9 @@ class SalesOrder extends Model
         'date',
         'notes',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(CustomerOrderItem::class, 'quotation_id');
+    }
 }

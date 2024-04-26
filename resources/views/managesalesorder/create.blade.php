@@ -76,7 +76,7 @@
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                unit price
+                                                unit price (RM)
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -87,42 +87,57 @@
                                                 amount</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                <a href="" class="btn btn-primary">+</a>
+                                                <a href="{{route('addItem',['id' => $order['id']] )}}" class="h3">+</a>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($suppliers as $supplier) --}}
+                                        @foreach ($order->items as $orderitem)
                                         <tr>
                                             <td>
                                                 <div class="d-flex px-3 py-1">
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0">Stainless Steel Hammer</h6>
-                                                        <p class="text-sm mb-0">0121</p>
+                                                        <input id="name" class="form-control no-border-bottom h6" type="text"
+                                                         placeholder="Enter item" value="{{($orderitem->item?$orderitem->item->name:null)}}">
+                                                        {{-- <h6 class="mb-0">Stainless Steel Hammer</h6> --}}
+                                                        <p class="text-sm mb-0">{{$orderitem->item_id}}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <p class="font-weight-bold mb-0">
-                                                    RM 39.90</p>
+                                                <input type="text" class="form-control no-border-bottom" placeholder="0.00" value="{{$orderitem->price}}">
+                                                {{-- <p class="font-weight-bold mb-0">
+                                                    RM 39.90</p> --}}
                                             </td>
                                             <td>
-                                                <p class="font-weight-bold mb-0">
-                                                    10 units</p>
+                                                {{-- <p class="font-weight-bold mb-0">
+                                                    10 units</p> --}}
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <input type="number" class="form-control no-border-bottom"  style="text-align: right;" value="{{$orderitem->quantity}}" placeholder="0">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <select name="units" class="form-control no-border-bottom">
+                                                                <option value="">units</option>
+                                                                <option value="">pcs</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                             </td>
                                             {{-- <td class="align-middle text-center text-sm">
                                                     <p class="text-sm font-weight-bold mb-0">sdf</p>
                                                 </td> --}}
                                             <td class="align-middle text-center text-sm">
-                                                <p class="text-sm font-weight-bold mb-0">RM 399.00</p>
+                                                <p class="text-sm font-weight-bold mb-0">RM {{$orderitem->quantity * $orderitem->price}}</p>
                                             </td>
                                             <td class="align-middle text-end">
                                                 <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                    <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p>
+                                                    {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p> --}}
+                                                    <a href="" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                                 </div>
                                             </td>
                                         </tr>
-                                        {{-- @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -207,6 +222,17 @@
             background-color: transparent;
         }
     </style>
+    <style>
+        /* Add bottom border to form inputs */
+        .no-border-bottom {
+            border: none;
+            /* border-bottom: 1px solid #ced4da; */
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
+            background-color: transparent;
+        }
+    </style>
 
     <script>
         // Display alert if any validation errors occur
@@ -214,4 +240,5 @@
             alert('{{ $errors->first() }}');
         @endif
     </script>
+    
 @endsection

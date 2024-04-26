@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/salesorder', [SalesOrderController::class, 'index'])->name('salesorder');
 	Route::get('/salesorder/create', [SalesOrderController::class, 'create'])->name('salesorder.create');
 	Route::post('/salesorder/store', [SupplierController::class, 'store'])->name('salesorder.store');
-	
+	Route::get('/salesorder/addItem/{id}', [SalesOrderController::class, 'addItem'])->name('addItem');
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 });

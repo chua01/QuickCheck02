@@ -17,4 +17,9 @@ class CustomerOrderItem extends Model
         'quantity',
         'unit',
     ];
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }

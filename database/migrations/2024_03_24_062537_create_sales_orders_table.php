@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('quotation_id')->nullable();
             $table->double('amount')->nullable();
             $table->foreignId('issued_by')->nullable();
-            $table->enum('status',['21','sdf'])->nullable();
+            $table->enum('status',['21','unstored'])->nullable();
             $table->date('date')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
