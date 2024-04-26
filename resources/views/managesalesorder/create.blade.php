@@ -105,7 +105,7 @@
                                                                 value="{{ $orderitem->item ? $orderitem->item->id : null }}" list="itemslist{{$orderitem->id}}" />
                                                             <datalist id="itemslist{{$orderitem->id}}">
                                                                 @foreach ($items as $listitem)
-                                                                    <option value="{{ $listitem->id }}">{{ $listitem->name }}</option>
+                                                                    <option value="{{ $listitem->id }}">{{ $listitem->name }}&#8288;({{$listitem->unit}}) </option>
                                                                 @endforeach
                                                             </datalist>
                                                         </div>
@@ -130,10 +130,8 @@
                                                                 value="{{ $orderitem->quantity }}" placeholder="0">
                                                         </div>
                                                         <div class="col-4">
-                                                            <select name="units" class="form-control no-border-bottom">
-                                                                <option value="">units</option>
-                                                                <option value="">pcs</option>
-                                                            </select>
+                                                            <p id="itemUnit{{$orderitem->id}}" class="text-sm mb-0 h6">{{ $orderitem->item ? $orderitem->item->unit :null}} </p>
+
                                                         </div>
                                                     </div>
                                                 </td>
@@ -256,24 +254,46 @@
             alert('{{ $errors->first() }}');
         @endif
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            @foreach ($order->items as $orderitem)
-                var itemName{{$orderitem->id}} = document.getElementById('itemName{{$orderitem->id}}');
-                var itemIdInput{{$orderitem->id}} = document.getElementById('itemId{{$orderitem->id}}');
-                var itemsList{{$orderitem->id}} = document.getElementById('itemslist{{$orderitem->id}}');
-    
-                itemIdInput{{$orderitem->id}}.addEventListener('input', function (e) {
-                    var value = e.target.value;
-                    var option = itemsList{{$orderitem->id}}.querySelector('option[value="' + value + '"]');
-                    if (option) {
-                        itemName{{$orderitem->id}}.textContent = option.textContent;
-                    } else {
-                        itemName{{$orderitem->id}}.textContent = '';
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @foreach ($order->items as $orderitem)
+            var itemName{{$orderitem->id}} = document.getElementById('itemName{{$orderitem->id}}');
+            var itemIdInput{{$orderitem->id}} = document.getElementById('itemId{{$orderitem->id}}');
+            var itemsList{{$orderitem->id}} = document.getElementById('itemslist{{$orderitem->id}}');
+
+            itemIdInput{{$orderitem->id}}.addEventListener('input', function (e) {
+                console.log("Input changed");
+                var value = e.target.value;
+                console.log("Input value:", value);
+                var option = itemsList{{$orderitem->id}}.querySelector('option[value="' + value + '"]');
+                if (option) {
+                    console.log("Option found:", option);
+                    var optionText = option.textContent;
+                    console.log("Option text:", optionText);
+                    var optionParts = optionText.split('\u2060'); // Split text content by invisible character
+                    console.log("Option parts:", optionParts);
+                    itemName{{$orderitem->id}}.textContent = optionParts[0]; // First part is item name
+                    if (optionParts[1]) {
+                        var itemUnit{{$orderitem->id}} = document.getElementById('itemUnit{{$orderitem->id}}');
+                        if (itemUnit{{$orderitem->id}}) {
+                            itemUnit{{$orderitem->id}}.textContent = optionParts[1]; // Second part is unit
+                        }
                     }
-                });
-            @endforeach
-        });
-    </script>
+                } else {
+                    console.log("Option not found");
+                    itemName{{$orderitem->id}}.textContent = '';
+                    var itemUnit{{$orderitem->id}} = document.getElementById('itemUnit{{$orderitem->id}}');
+                    if (itemUnit{{$orderitem->id}}) {
+                        itemUnit{{$orderitem->id}}.textContent = '';
+                    }
+                }
+            });
+        @endforeach
+    });
+</script>
+
+
+
+
     
 @endsection
