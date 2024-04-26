@@ -87,34 +87,47 @@
                                                 amount</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                <a href="{{route('addItem',['id' => $order['id']] )}}" class="h3">+</a>
+                                                <a href="{{ route('addItem', ['id' => $order['id']]) }}"
+                                                    class="h3">+</a>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach ($order->items as $orderitem)
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-3 py-1">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <input id="name" class="form-control no-border-bottom h6" type="text"
-                                                         placeholder="Enter item" value="{{($orderitem->item?$orderitem->item->name:null)}}">
-                                                        {{-- <h6 class="mb-0">Stainless Steel Hammer</h6> --}}
-                                                        <p class="text-sm mb-0">{{$orderitem->item_id}}</p>
+                                            <tr>
+                                                <td>
+                                                    
+                                                    <div class="d-flex px-3 py-1">
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <p id="itemName{{$orderitem->id}}" class="text-sm mb-0 h6">{{ $orderitem->item ? $orderitem->item->name :null}} </p>
+                                                            <input id="itemId{{$orderitem->id}}" class="form-control no-border-bottom" type="text" placeholder="Enter item"
+                                                                value="{{ $orderitem->item ? $orderitem->item->id : null }}" list="itemslist{{$orderitem->id}}" />
+                                                            <datalist id="itemslist{{$orderitem->id}}">
+                                                                @foreach ($items as $listitem)
+                                                                    <option value="{{ $listitem->id }}">{{ $listitem->name }}</option>
+                                                                @endforeach
+                                                            </datalist>
+                                                        </div>
+                                                        
+                                                       
+                                                        
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control no-border-bottom" placeholder="0.00" value="{{$orderitem->price}}">
-                                                {{-- <p class="font-weight-bold mb-0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control no-border-bottom"
+                                                        placeholder="0.00" value="{{ $orderitem->price }}">
+                                                    {{-- <p class="font-weight-bold mb-0">
                                                     RM 39.90</p> --}}
-                                            </td>
-                                            <td>
-                                                {{-- <p class="font-weight-bold mb-0">
+                                                </td>
+                                                <td>
+                                                    {{-- <p class="font-weight-bold mb-0">
                                                     10 units</p> --}}
                                                     <div class="row">
                                                         <div class="col-4">
-                                                            <input type="number" class="form-control no-border-bottom"  style="text-align: right;" value="{{$orderitem->quantity}}" placeholder="0">
+                                                            <input type="number" class="form-control no-border-bottom"
+                                                                style="text-align: right;"
+                                                                value="{{ $orderitem->quantity }}" placeholder="0">
                                                         </div>
                                                         <div class="col-4">
                                                             <select name="units" class="form-control no-border-bottom">
@@ -123,20 +136,23 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                            </td>
-                                            {{-- <td class="align-middle text-center text-sm">
+                                                </td>
+                                                {{-- <td class="align-middle text-center text-sm">
                                                     <p class="text-sm font-weight-bold mb-0">sdf</p>
                                                 </td> --}}
-                                            <td class="align-middle text-center text-sm">
-                                                <p class="text-sm font-weight-bold mb-0">RM {{$orderitem->quantity * $orderitem->price}}</p>
-                                            </td>
-                                            <td class="align-middle text-end">
-                                                <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                    {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p> --}}
-                                                    <a href="" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                <td class="align-middle text-center text-sm">
+                                                    <p class="text-sm font-weight-bold mb-0">RM
+                                                        {{ $orderitem->quantity * $orderitem->price }}</p>
+                                                </td>
+                                                <td class="align-middle text-end">
+                                                    <div
+                                                        class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                        {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p> --}}
+                                                        <a href=""
+                                                            class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -186,9 +202,9 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
-                            
+
                         </div>
 
                     </div>
@@ -239,6 +255,25 @@
         @if ($errors->any())
             alert('{{ $errors->first() }}');
         @endif
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @foreach ($order->items as $orderitem)
+                var itemName{{$orderitem->id}} = document.getElementById('itemName{{$orderitem->id}}');
+                var itemIdInput{{$orderitem->id}} = document.getElementById('itemId{{$orderitem->id}}');
+                var itemsList{{$orderitem->id}} = document.getElementById('itemslist{{$orderitem->id}}');
+    
+                itemIdInput{{$orderitem->id}}.addEventListener('input', function (e) {
+                    var value = e.target.value;
+                    var option = itemsList{{$orderitem->id}}.querySelector('option[value="' + value + '"]');
+                    if (option) {
+                        itemName{{$orderitem->id}}.textContent = option.textContent;
+                    } else {
+                        itemName{{$orderitem->id}}.textContent = '';
+                    }
+                });
+            @endforeach
+        });
     </script>
     
 @endsection
