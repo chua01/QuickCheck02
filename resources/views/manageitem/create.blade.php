@@ -136,6 +136,19 @@
                                         <input class="form-control" type="text" name="minlevel">
                                     </div>
                                 </div>
+                                <div id="supplierForm">
+                                    <input class="form-control no-border-bottom" type="text"
+                                        placeholder="Enter Supplier" list="supplierList" name="supplier"
+                                        onchange="" />
+                                    <datalist id="supplierList">
+                                        @foreach ($suppliers as $supplier)
+                                            <option value="{{ $supplier->id }}">
+                                                {{ $supplier->name }}&#8288;
+                                            </option>
+                                        @endforeach
+                                    </datalist>
+                                </div>
+
                             </div>
                         </div>
                     </div>

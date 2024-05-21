@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +18,8 @@ class ItemController extends Controller
     
     public function create()
     {
-        return view('manageitem.create');
+        $suppliers = Supplier::all();
+        return view('manageitem.create', compact('suppliers'));
     }
    
     // public function store(Request $request)
