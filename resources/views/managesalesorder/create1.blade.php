@@ -4,7 +4,7 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Add Sales Order'])
 
     <div class="container-fluid py-4">
-        <form  id="salesOrderForm" method="POST" action="{{ route('supplier.store') }}">
+        <form method="POST" action="{{ route('supplier.store') }}">
             @csrf
 
             <div class="row">
@@ -68,6 +68,7 @@
                             </div>
 
                             <div class="table-responsive p-0">
+                                <div id="dropdownLists"></div>
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
@@ -87,63 +88,68 @@
                                                 amount</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                <a href="{{ route('addItem', ['id' => $order['id']]) }}"
-                                                    class="h3">+</a>
+                                                <a id="addButton" class="h3">+</a>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="itemList">
 
-                                        @foreach ($order->items as $orderitem)
-                                            <tr>
-                                                <td>
-                                                    
-                                                    <div class="d-flex px-3 py-1">
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <p id="itemName{{$orderitem->id}}" class="text-sm mb-0 h6">{{ $orderitem->item ? $orderitem->item->name :null}} </p>
-                                                            <input id="itemId{{$orderitem->id}}" class="form-control no-border-bottom" type="text" placeholder="Enter item"
-                                                                value="{{ $orderitem->item ? $orderitem->item->id : null }}" list="itemslist{{$orderitem->id}}" />
-                                                            <datalist id="itemslist{{$orderitem->id}}">
-                                                                @foreach ($items as $listitem)
-                                                                    <option value="{{ $listitem->id }}">{{ $listitem->name }}&#8288;({{$listitem->unit}}) </option>
-                                                                @endforeach
-                                                            </datalist>
-                                                        </div>
-                                                        
-                                                       
-                                                        
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control no-border-bottom"
-                                                        placeholder="0.00" value="{{ $orderitem->price }}">
-                                                </td>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <input type="number" class="form-control no-border-bottom"
-                                                                style="text-align: right;"
-                                                                value="{{ $orderitem->quantity }}" placeholder="0">
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <p id="itemUnit{{$orderitem->id}}" class="text-sm mb-0 h6">{{ $orderitem->item ? $orderitem->item->unit :null}} </p>
+                                        <tr>
+                                            <td>
 
-                                                        </div>
+                                                <div class="d-flex px-3 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <p id="itemName" class="text-sm mb-0 h6"></p>
+                                                        <input id="itemId" class="form-control no-border-bottom"
+                                                            type="text" placeholder="Enter item" value=""
+                                                            list="itemslist" />
+                                                        <datalist id="itemslist">
+                                                            @foreach ($items as $listitem)
+                                                                <option value="{{ $listitem->id }}">
+                                                                    {{ $listitem->name }}&#8288;({{ $listitem->unit }})
+                                                                </option>
+                                                            @endforeach
+                                                        </datalist>
                                                     </div>
-                                                </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <p class="text-sm font-weight-bold mb-0">RM
-                                                        {{ $orderitem->quantity * $orderitem->price }}</p>
-                                                </td>
-                                                <td class="align-middle text-end">
-                                                    <div
-                                                        class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                        <a href=""
-                                                            class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+
+
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control no-border-bottom"
+                                                    placeholder="0.00" value="">
+                                                {{-- <p class="font-weight-bold mb-0">
+                                                    RM 39.90</p> --}}
+                                            </td>
+                                            <td>
+                                                {{-- <p class="font-weight-bold mb-0">
+                                                    10 units</p> --}}
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <input type="number" class="form-control no-border-bottom"
+                                                            style="text-align: right;" value="{" placeholder="0">
                                                     </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                    <div class="col-4">
+                                                        <p id="itemUnit" class="text-sm mb-0 h6"></p>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{-- <td class="align-middle text-center text-sm">
+                                                    <p class="text-sm font-weight-bold mb-0">sdf</p>
+                                                </td> --}}
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-sm font-weight-bold mb-0">RM</p>
+                                            </td>
+                                            <td class="align-middle text-end">
+                                                <div class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                    {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p> --}}
+                                                    <a href=""
+                                                        class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -192,8 +198,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button id="clearDataBtn" class="btn btn-danger btn-sm ms-auto" type="button">Clear Data</button>
-           
+
                             <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
 
                         </div>
@@ -247,98 +252,110 @@
             alert('{{ $errors->first() }}');
         @endif
     </script>
- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        @foreach ($order->items as $orderitem)
-            var itemName{{$orderitem->id}} = document.getElementById('itemName{{$orderitem->id}}');
-            var itemIdInput{{$orderitem->id}} = document.getElementById('itemId{{$orderitem->id}}');
-            var itemsList{{$orderitem->id}} = document.getElementById('itemslist{{$orderitem->id}}');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('testing');
 
-            itemIdInput{{$orderitem->id}}.addEventListener('input', function (e) {
+            console.log('fish');
+            console.log(" what the fuck");
+            var itemName = document.getElementById('itemName');
+            var itemIdInput = document.getElementById('itemId');
+            var itemsList = document.getElementById('itemslist');
+
+            itemIdInput.addEventListener('input', function(e) {
                 console.log("Input changed");
                 var value = e.target.value;
                 console.log("Input value:", value);
-                var option = itemsList{{$orderitem->id}}.querySelector('option[value="' + value + '"]');
+                var option = itemsList.querySelector('option[value="' + value + '"]');
                 if (option) {
                     console.log("Option found:", option);
                     var optionText = option.textContent;
                     console.log("Option text:", optionText);
-                    var optionParts = optionText.split('\u2060'); // Split text content by invisible character
+                    var optionParts = optionText.split(
+                        '\u2060'); // Split text content by invisible character
                     console.log("Option parts:", optionParts);
-                    itemName{{$orderitem->id}}.textContent = optionParts[0]; // First part is item name
+                    itemName.textContent = optionParts[0]; // First part is item name
                     if (optionParts[1]) {
-                        var itemUnit{{$orderitem->id}} = document.getElementById('itemUnit{{$orderitem->id}}');
-                        if (itemUnit{{$orderitem->id}}) {
-                            itemUnit{{$orderitem->id}}.textContent = optionParts[1]; // Second part is unit
+                        var itemUnit = document.getElementById('itemUnit');
+                        if (itemUnit) {
+                            itemUnit.textContent = optionParts[1]; // Second part is unit
                         }
                     }
                 } else {
                     console.log("Option not found");
-                    itemName{{$orderitem->id}}.textContent = '';
-                    var itemUnit{{$orderitem->id}} = document.getElementById('itemUnit{{$orderitem->id}}');
-                    if (itemUnit{{$orderitem->id}}) {
-                        itemUnit{{$orderitem->id}}.textContent = '';
+                    itemName.textContent = '';
+                    var itemUnit = document.getElementById('itemUnit');
+                    if (itemUnit) {
+                        itemUnit.textContent = '';
                     }
                 }
             });
-        @endforeach
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-        $(document).ready(function() {
-            // Load saved form data from local storage when the page loads
-            var formData = JSON.parse(localStorage.getItem('formData'));
-            if (formData) {
-                // Populate form fields with saved data
-                $('#name').val(formData.name);
-                $('#email').val(formData.email);
-                $('#contactno').val(formData.contactno);
-                $('#location').val(formData.location);
-                $('#code').val(formData.code);
-                $('#street').val(formData.street);
-                $('#state').val(formData.state);
-            }
 
-            // Save form data to local storage when input fields change
-            $('#salesOrderForm input, #salesOrderForm textarea').on('input', function() {
-                var formData = {
-                    name: $('#name').val(),
-                    email: $('#email').val(),
-                    contactno: $('#contactno').val(),
-                    location: $('#location').val(),
-                    code: $('#code').val(),
-                    street: $('#street').val(),
-                    state: $('#state').val()
-                };
-                localStorage.setItem('formData', JSON.stringify(formData));
-            });
+        });
 
-            // Clear form data from local storage when the "Clear Data" button is clicked
-            $('#clearDataBtn').on('click', function() {
-                localStorage.removeItem('formData');
-                alert('Form data cleared successfully.');
-            });
+        document.getElementById('addButton').addEventListener('click', function() {
+            var dropdownLists = document.getElementById('itemList');
+            var newDropdown = document.createElement('tr');
+            newDropdown.classList.add('form-group');
+            newDropdown.innerHTML = `
+            <tr>
+                                            <td>
 
-            // Clear form data from local storage when the form is submitted
-            $('#salesOrderForm').on('submit', function() {
-                localStorage.removeItem('formData');
-            });
+                                                <div class="d-flex px-3 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <p id="itemName" class="text-sm mb-0 h6"></p>
+                                                        <input id="itemId" class="form-control no-border-bottom"
+                                                            type="text" placeholder="Enter item" value=""
+                                                            list="itemslist" />
+                                                        <datalist id="itemslist">
+                                                            @foreach ($items as $listitem)
+                                                                <option value="{{ $listitem->id }}">
+                                                                    {{ $listitem->name }}&#8288;({{ $listitem->unit }})
+                                                                </option>
+                                                            @endforeach
+                                                        </datalist>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control no-border-bottom"
+                                                    placeholder="0.00" value="">
+                                                {{-- <p class="font-weight-bold mb-0">
+                                                    RM 39.90</p> --}}
+                                            </td>
+                                            <td>
+                                                {{-- <p class="font-weight-bold mb-0">
+                                                    10 units</p> --}}
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <input type="number" class="form-control no-border-bottom"
+                                                            style="text-align: right;" value="{" placeholder="0">
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <p id="itemUnit" class="text-sm mb-0 h6"></p>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{-- <td class="align-middle text-center text-sm">
+                                                    <p class="text-sm font-weight-bold mb-0">sdf</p>
+                                                </td> --}}
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-sm font-weight-bold mb-0">RM</p>
+                                            </td>
+                                            <td class="align-middle text-end">
+                                                <div class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                    {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p> --}}
+                                                    <a href=""
+                                                        class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                `;
+            dropdownLists.appendChild(newDropdown);
         });
     </script>
-
-
-
-
-    <script>
-    // Check if jQuery is defined
-    if (typeof jQuery != 'undefined') {
-        console.log("jQuery is loaded.");
-    } else {
-        console.log("jQuery is not loaded.");
-    }
-</script>
-
-
-    
 @endsection

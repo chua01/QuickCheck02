@@ -25,4 +25,13 @@ class Quotation extends Model
         'delivery_fee',
     ];
 
+    public function customerItem()
+    {
+        return $this->hasMany(CustomerOrderItem::class, 'quotation_id');
+    }
+    
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

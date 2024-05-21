@@ -4,7 +4,7 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Add Sales Order'])
 
     <div class="container-fluid py-4">
-        <form  id="salesOrderForm" method="POST" action="{{ route('supplier.store') }}">
+        <form method="POST" action="{{ route('supplier.store') }}">
             @csrf
 
             <div class="row">
@@ -117,8 +117,12 @@
                                                 <td>
                                                     <input type="text" class="form-control no-border-bottom"
                                                         placeholder="0.00" value="{{ $orderitem->price }}">
+                                                    {{-- <p class="font-weight-bold mb-0">
+                                                    RM 39.90</p> --}}
                                                 </td>
                                                 <td>
+                                                    {{-- <p class="font-weight-bold mb-0">
+                                                    10 units</p> --}}
                                                     <div class="row">
                                                         <div class="col-4">
                                                             <input type="number" class="form-control no-border-bottom"
@@ -131,6 +135,9 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {{-- <td class="align-middle text-center text-sm">
+                                                    <p class="text-sm font-weight-bold mb-0">sdf</p>
+                                                </td> --}}
                                                 <td class="align-middle text-center text-sm">
                                                     <p class="text-sm font-weight-bold mb-0">RM
                                                         {{ $orderitem->quantity * $orderitem->price }}</p>
@@ -138,6 +145,7 @@
                                                 <td class="align-middle text-end">
                                                     <div
                                                         class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                        {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p> --}}
                                                         <a href=""
                                                             class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                                     </div>
@@ -192,8 +200,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button id="clearDataBtn" class="btn btn-danger btn-sm ms-auto" type="button">Clear Data</button>
-           
+
                             <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
 
                         </div>
@@ -284,60 +291,8 @@
         @endforeach
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-        $(document).ready(function() {
-            // Load saved form data from local storage when the page loads
-            var formData = JSON.parse(localStorage.getItem('formData'));
-            if (formData) {
-                // Populate form fields with saved data
-                $('#name').val(formData.name);
-                $('#email').val(formData.email);
-                $('#contactno').val(formData.contactno);
-                $('#location').val(formData.location);
-                $('#code').val(formData.code);
-                $('#street').val(formData.street);
-                $('#state').val(formData.state);
-            }
-
-            // Save form data to local storage when input fields change
-            $('#salesOrderForm input, #salesOrderForm textarea').on('input', function() {
-                var formData = {
-                    name: $('#name').val(),
-                    email: $('#email').val(),
-                    contactno: $('#contactno').val(),
-                    location: $('#location').val(),
-                    code: $('#code').val(),
-                    street: $('#street').val(),
-                    state: $('#state').val()
-                };
-                localStorage.setItem('formData', JSON.stringify(formData));
-            });
-
-            // Clear form data from local storage when the "Clear Data" button is clicked
-            $('#clearDataBtn').on('click', function() {
-                localStorage.removeItem('formData');
-                alert('Form data cleared successfully.');
-            });
-
-            // Clear form data from local storage when the form is submitted
-            $('#salesOrderForm').on('submit', function() {
-                localStorage.removeItem('formData');
-            });
-        });
-    </script>
 
 
-
-
-    <script>
-    // Check if jQuery is defined
-    if (typeof jQuery != 'undefined') {
-        console.log("jQuery is loaded.");
-    } else {
-        console.log("jQuery is not loaded.");
-    }
-</script>
 
 
     

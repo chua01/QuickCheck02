@@ -22,7 +22,7 @@
                 @foreach ($items as $item)
                     <div class="col-md-3 mb-4">
                         <div class="card border border-1 position-relative">
-                            <a href="#">
+                            <a href="{{route('item.show', [ 'id' => $item->id])}}">
                                 <div class="card-header mx-4 p-3 text-center">
                                     <img src="{{ Storage::url($item->pic) }}" alt="Icon" class="opacity-10 rounded border " style="width: 8rem; height: 8rem;">
                                 </div>

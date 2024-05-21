@@ -70,12 +70,18 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
 	Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
-	
+
 	// order
 	Route::get('/salesorder', [SalesOrderController::class, 'index'])->name('salesorder');
 	Route::get('/salesorder/create', [SalesOrderController::class, 'create'])->name('salesorder.create');
-	Route::post('/salesorder/store', [SupplierController::class, 'store'])->name('salesorder.store');
+	Route::post('/salesorder/store', [SalesOrderController::class, 'store'])->name('salesorder.store');
 	Route::get('/salesorder/addItem/{id}', [SalesOrderController::class, 'addItem'])->name('addItem');
+	Route::get('/imagelabel', [SalesOrderController::class, 'imagelabel'])->name('imagelabel');
+
+	Route::get('/form', [SalesOrderController::class, 'showForm'])->name('show.form');
+	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
+	Route::post('/save-permanent', [SalesOrderController::class, 'savePermanently'])->name('save.permanent');
+	Route::post('/trysee2', [SalesOrderController::class, 'trysee2'])->name('trysee2');
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 });

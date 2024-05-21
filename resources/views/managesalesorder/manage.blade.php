@@ -38,30 +38,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($suppliers as $supplier) --}}
+                                @foreach ($quotations as $quotation)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-3 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0">Chua Kian Pheng</h6>
-                                                    <p class="text-sm mb-0">chuakianpgheng@gmail.com</p>
-                                                    <p class="text-sm mb-0">+612 3456789</p>
+                                                    <h6 class="mb-0">{{$quotation->customer->name}}</h6>
+                                                    <p class="text-sm mb-0">{{$quotation->customer->email}}</p>
+                                                    <p class="text-sm mb-0">{{$quotation->customer->contact->first()->contactnumber}}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <p class="font-weight-bold mb-0">
-                                               12</p>
+                                               {{$quotation->id}}</p>
                                         </td>
                                         <td>
                                             <p class="font-weight-bold mb-0">
-                                               01/01/2023</p>
+                                               {{$quotation->date}}</p>
                                         </td>
                                         {{-- <td class="align-middle text-center text-sm">
                                             <p class="text-sm font-weight-bold mb-0">sdf</p>
                                         </td> --}}
                                         <td class="align-middle text-center text-sm">
-                                            <p class="text-sm font-weight-bold mb-0">RM 210.00</p>
+                                            <p class="text-sm font-weight-bold mb-0">RM {{$quotation->amount}}</p>
                                         </td>
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center">
@@ -70,7 +70,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                {{-- @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
