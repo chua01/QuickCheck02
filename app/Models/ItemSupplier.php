@@ -15,4 +15,14 @@ class ItemSupplier extends Model
         'price',
     ];
 
+  
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+   
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
 }

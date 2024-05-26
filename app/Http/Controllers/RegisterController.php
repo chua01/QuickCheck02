@@ -4,21 +4,17 @@ namespace App\Http\Controllers;
 
 // use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Google\Rpc\Context\AttributeContext\Request;
 
 class RegisterController extends Controller
 {
     public function index()
     {
         $users = User::all();
-        // dd($users);
         return view('manageuser.manage',compact('users'));
     }
 
-    // public function create()
-    // {
-    //     return view('auth.register');
-    // }
-    
+
     public function create()
     {
         return view('manageuser.create');
@@ -26,18 +22,25 @@ class RegisterController extends Controller
 
     public function store()
     {
-        // dd('sdfsdf');
         $attributes = request()->validate([
             'username' => 'required|max:255|min:2',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|min:5|max:255',
-            // 'terms' => 'required'
         ]);
-        // dd($attributes);
         $attributes['type'] = 'staff';
         $user = User::create($attributes);
-        // auth()->login($user);
 
         return redirect('/dashboard');
     }
+
+    public function edit($id){
+        $user = User::find ($id);
+        return view('manageuser.edit', compact('user'));
+    }
+  
+    // public function update(Request $request, $id){
+    //     $user = User::find ($id);
+    //     $user->udpate($request);
+    //     return redirect()->route('')
+    // }
 }

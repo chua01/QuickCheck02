@@ -26,6 +26,7 @@ use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemSupplierController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 
@@ -43,8 +44,6 @@ Route::post('/change-password', [ChangePassword::class, 'update'])->middleware('
 Route::get('/dashboard', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::post('/register', [RegisterController::class, 'store'])->name('register.perform');
-	Route::get('/user', [RegisterController::class, 'index'])->name('user');
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
@@ -52,14 +51,19 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/profile-static', [PageController::class, 'profile'])->name('profile-static');
 	Route::get('/sign-in-static', [PageController::class, 'signin'])->name('sign-in-static');
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
-	Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+	
+	// user
+	Route::post('/register', [RegisterController::class, 'store'])->name('register.perform');
+	Route::get('/user', [RegisterController::class, 'index'])->name('user');
+	Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
+	Route::get('/user/edit/{id}', [RegisterController::class, 'edit'])->name('user.edit');
 
 	// item
 	Route::get('/item', [ItemController::class, 'index'])->name('item');
 	Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
 	Route::post('/item/store', [ItemController::class, 'store'])->name('item.store');
-	Route::get('/item/show', [ItemController::class, 'show'])->name('item.show');
+	Route::get('/item/show/{id}', [ItemController::class, 'show'])->name('item.show');
 
 	// customer
 	Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
@@ -70,6 +74,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
 	Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+	
+	//item supplier
+	Route::post('/itemsupplier/store/{id}', [ItemSupplierController::class, 'store'])->name('itemSupplier.store');
+	Route::get('/itemsupplier/{id}', [ItemSupplierController::class, 'destroy'])->name('itemSupplier.destroy');
 
 	// order
 	Route::get('/salesorder', [SalesOrderController::class, 'index'])->name('salesorder');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemSupplier;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -35,12 +36,21 @@ class ItemController extends Controller
     // }
 
 
-    public function show()
+    public function show($id)
     {
-        $item = Item::whereNotNull('pic')->first();
+        $item = Item::find($id);
         // dd(Storage::url($item->pic));
+        $itemSuppliers = ItemSupplier::where('item_id', $item->id)->get();
+        $suppliers = Supplier::all();
 
-        return view('manageitem.showpic', compact('item'));
+        $itemSupplierIds = $itemSuppliers->pluck('supplier_id')->toArray();
+
+        // Filter out suppliers that are in the itemSuppliers list
+        $suppliers = $suppliers->reject(function ($supplier) use ($itemSupplierIds) {
+            return in_array($supplier->id, $itemSupplierIds);
+        });
+
+        return view('manageitem.shows', compact('item', 'suppliers', 'itemSuppliers'));
     }
 
     public function store(Request $request)

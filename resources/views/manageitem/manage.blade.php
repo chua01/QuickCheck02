@@ -34,7 +34,7 @@
                                             <h6 >
                                         </h6>
                                         </span>
-                                    <span class="text-xs">{{$item->id}}</span><br>
+                                    <span class="text-xs">ID: {{$item->id}}</span><br>
                                     <span class="text-xs">RM {{$item->price1}}</span>
                                     <hr class="horizontal dark my-3">
                                     <h5 class="mb-0">{{$item->quantity}} {{$item->unit}}</h5>

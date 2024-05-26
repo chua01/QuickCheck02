@@ -4,14 +4,14 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Add Item'])
 
     <div class="container-fluid py-4">
-        <form method="POST" action="{{ route('item.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('itemSupplier.store',['id' => $item->id]) }}" enctype="multipart/form-data">
             @csrf
             <style>
                 .file-upload-container {
                     position: relative;
                     display: inline-block;
                 }
-            
+
                 .file-upload-input {
                     position: absolute;
                     left: 0;
@@ -21,7 +21,7 @@
                     opacity: 0;
                     cursor: pointer;
                 }
-            
+
                 .file-upload-image {
                     width: 100%;
                     height: auto;
@@ -34,12 +34,12 @@
                     aspect-ratio: 1/1;
                     object-fit: cover;
                 }
-            
+
                 .file-upload-image:hover {
                     opacity: 0.7;
                 }
             </style>
-            
+
             {{-- @style() --}}
 
             <div class="row">
@@ -48,85 +48,115 @@
                         <div class="card-header pb-0">
                             <div class="d-flex align-items-center">
                                 <p class="mb-0">New Item</p>
-                                <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
+                               
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="col-md-6">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="file-upload-container">
-                                            <input class="form-control file-upload-input" type="file" id="pic" name="pic" onchange="displayImage(event)">
-                                            <img id="selected-image" class="file-upload-image" src="{{ asset('img/plus.png') }}" alt="Upload Photo">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="file-upload-container">
+                                                @if ($item->pic)
+                                                    <img src="{{ Storage::url($item->pic) }}" alt="{{ $item->name }}"
+                                                        class="img-fluid border rounded rounded-3">
+                                                @else
+                                                    <p>No image available</p>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <script>
-                                    function displayImage(event) {
-                                        var input = event.target;
-                                        if (input.files && input.files[0]) {
-                                            var reader = new FileReader();
-                                            reader.onload = function (e) {
-                                                var imgElement = document.getElementById('selected-image');
-                                                imgElement.src = e.target.result;
-                                            };
-                                            reader.readAsDataURL(input.files[0]);
-                                        }
-                                    }
-                                </script>
-                                
-
-                              
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <h4>{{ $item->name }}</h4>
+                                        <p>{{ $item->description }}</p>
+                                        <p>{{ $item->quantity }} {{ $item->unit }}</p>
+                                        {{-- <label for="example-text-input" class="form-control-label">Item Name</label> --}}
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-uppercase text-sm">User Information</p>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Item Name</label>
-                                        <input class="form-control" type="text" name="name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Description</label>
-                                        <input class="form-control" type="text" name="description">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Quantity</label>
-                                        <input class="form-control" type="number" name="quantity">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">unit</label>
-                                        <input class="form-control" type="text" name="unit">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 1</label>
-                                        <input class="form-control" type="text" name="price1">
+                                        <p>RM {{ $item->price1 }} </p>
+                                        {{-- <input class="form-control" type="text" name="price1"> --}}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 2</label>
-                                        <input class="form-control" type="text" name="price2">
+                                        <p>RM {{ $item->price2 }} </p>
+                                        {{-- <input class="form-control" type="text" name="price1"> --}}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 3</label>
-                                        <input class="form-control" type="text" name="price3">
+                                        <p>RM {{ $item->price3 }} </p>
+                                        {{-- <input class="form-control" type="text" name="price1"> --}}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="example-text-input" class="form-control-label">Min Quantity</label>
-                                        <input class="form-control" type="text" name="minlevel">
+                            </div>
+                            <br>
+                            <div class="row">
+                                <p>Suppliers</p>
+                                @php
+                                 $counter = 0;   
+                                @endphp
+                                @foreach($itemSuppliers as $itemSupplier)
+                                @php
+                                $counter+=1
+                                @endphp
+                                <div class="card-body mb-2 border rounded rounded-3">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            {{$counter}}
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>{{$itemSupplier->supplier->name}}</h6>
+                                            <h6>
+                                                <small>{{$itemSupplier->supplier->email}}</small>
+                                            </h6>
+                                            <h6>
+                                                <small>{{$itemSupplier->supplier->contact->first()->contactnumber}}</small>
+                                            </h6>
+                                            
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>
+                                                <small>{{$itemSupplier->supplier->address->location}}</small>
+                                            </h6>
+                                            <h6>
+                                                <small> {{$itemSupplier->supplier->address->street}}</small>
+                                            </h6>
+                                            <h6>
+                                                <small>{{$itemSupplier->supplier->address->code}}</small>
+                                            </h6>
+                                            <h6>
+                                                <small>{{$itemSupplier->supplier->address->state}}</small>
+                                            </h6>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a href="{{route('itemSupplier.destroy',['id' => $itemSupplier->id ])}}" class="btn btn-danger">remove</a>
+                                            {{-- <button class="btn btn-danger">remove</button> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                                <div class="row">
+                                    <div class="col-md-8">
+
+                                        <select name="supplier" class="form-control" id="supplier" required>
+                                            <option value="">New Supplier</option>
+                                            @foreach($suppliers as $supplier)
+                                            <option value="{{$supplier->id}}">{{$supplier->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-info">Add</button>
                                     </div>
                                 </div>
                             </div>
@@ -136,6 +166,20 @@
 
             </div>
         </form>
+        <script>
+            function displayImage(event) {
+                var input = event.target;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var imgElement = document.getElementById('selected-image');
+                        imgElement.src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+
         @include('layouts.footers.auth.footer')
     </div>
 @endsection
