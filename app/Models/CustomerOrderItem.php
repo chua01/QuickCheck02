@@ -15,7 +15,6 @@ class CustomerOrderItem extends Model
         'item_id',
         'amount',
         'quantity',
-        'unit',
     ];
 
     public function item()

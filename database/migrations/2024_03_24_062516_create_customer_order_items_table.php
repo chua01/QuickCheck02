@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('item_id')->nullable();
             $table->double('amount')->nullable();
             $table->double('quantity')->nullable();
-            $table->enum('unit',['a','f'])->nullable();
             $table->timestamps();
         });
     }

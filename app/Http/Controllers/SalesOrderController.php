@@ -63,7 +63,7 @@ class SalesOrderController extends Controller
     public function store(Request $request){
         $total = 0;
         foreach($request->orderitem as $item){
-            $total = $total + $item['price'];
+            $total = $total + $item['price'] * $item['quantity'];
         }
         $finalAmount = ($total - $request->discount + $request->extrafee)*1.06;
         // dd($request);

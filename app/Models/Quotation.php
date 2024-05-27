@@ -11,18 +11,12 @@ class Quotation extends Model
     protected $fillable = [
         'id',
         'customer_id',
-        'billing_address',
         'delivery_address',
         'status',
         'amount',
-        'issued_by',
         'date',
-        'payment_id',
-        'notes',
         'discount',
-        'tax',
         'extra_fee',
-        'delivery_fee',
     ];
 
     public function customerItem()

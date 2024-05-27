@@ -138,7 +138,7 @@
                                             <td>
                                                 <input id="itemPrice0" type="number"
                                                     class="form-control no-border-bottom" placeholder="0.00"
-                                                    value="0.00" name="orderitem[0][price]">
+                                                    value="0.00" name="orderitem[0][price]" onchange="update_item_info()">
 
                                             </td>
                                             <td>
@@ -184,7 +184,7 @@
                                                     <span class="">RM</span>
                                                 </div>
                                                 <input name="extrafee" style="text-align: right;" type="number"
-                                                    class="form-control no-border-bottom" value="343" placeholder="">
+                                                    class="form-control no-border-bottom" placeholder="" onchange="update_item_info()">
                                             </div>
                                         </div>
 
@@ -207,7 +207,7 @@
                                                     <span class="">RM</span>
                                                 </div>
                                                 <input name="discount" style="text-align: right;" type="number"
-                                                    class="form-control no-border-bottom" value="343" placeholder="">
+                                                    class="form-control no-border-bottom" placeholder="" onchange="update_item_info()">
                                             </div>
                                         </div>
                                     </div>
@@ -368,7 +368,7 @@
                     </td>
                     <td>
                         <input type="text" class="form-control no-border-bottom"
-                            placeholder="0.00" id="itemPrice${index}" value="" name="orderitem[${index}][price]">
+                            placeholder="0.00" id="itemPrice${index}" value="" name="orderitem[${index}][price]" onchange="update_item_info()">
 
                     </td>
                     <td>
@@ -448,12 +448,25 @@
                 }
             }
             extra_fee = document.getElementById("extrafee").querySelector("input");
-            totalAmount += parseFloat(extra_fee.value);
-            console.log(totalAmount, total_amount_to_find);
+            if (!isNaN(totalAmount + parseFloat(extra_fee.value))) {
+
+                // totalAmount += parseFloat(price_to_find.value) * parseInt(quantity.value, 10);
+                console.log('howdy');
+                console.log(extra_fee.value);
+                console.log(totalAmount);
+                totalAmount += parseFloat(extra_fee.value);
+            }
             total_amount = total_amount_to_find.querySelector("p");
             total_amount.innerHTML = 'RM ' + parseFloat(totalAmount).toFixed(2);
+            discount = discount_to_find.querySelector("input");
+            if (!isNaN(totalAmount - parseFloat(discount.value))) {
+                totalAmount -= parseFloat(discount.value);
+            }
+            console.log(totalAmount, total_amount_to_find);
             tax = tax_to_find.querySelector("p");
             tax.innerHTML = 'RM ' + parseFloat(totalAmount * 0.06).toFixed(2);
+            amount = document.getElementById('amount').querySelector("p");
+            amount.innerHTML = 'RM ' + parseFloat(totalAmount * 1.06).toFixed(2);
 
         };
 
@@ -461,6 +474,7 @@
             customers = {!! json_encode($customers) !!};
             console.log(customers);
 
+            // $("#name")
             var name = document.getElementById('name');
             var email = document.getElementById('email');
             var contactno = document.getElementById('contactno');
