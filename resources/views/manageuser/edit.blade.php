@@ -4,7 +4,7 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Profile'])
   
     <div class="container-fluid py-4">
-        <form method="POST" action="{{ route('register.perform') }}">
+        <form method="POST" action="{{ route('user.update',['id' => $user->id]) }}">
             @csrf
 
             <div class="row">

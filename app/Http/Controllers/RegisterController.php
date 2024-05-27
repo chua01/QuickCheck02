@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 // use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Google\Rpc\Context\AttributeContext\Request;
+// use Google\Rpc\Context\AttributeContext\Request;
 
 class RegisterController extends Controller
 {
@@ -38,9 +38,20 @@ class RegisterController extends Controller
         return view('manageuser.edit', compact('user'));
     }
   
-    // public function update(Request $request, $id){
-    //     $user = User::find ($id);
-    //     $user->udpate($request);
-    //     return redirect()->route('')
-    // }
+    public function update($id){
+        $request = request();
+        $user = User::find ($id);
+        $user->update([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        return redirect()->route('user');
+    }
+
+    public function destroy($id){
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('user');
+    }
 }

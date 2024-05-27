@@ -16,13 +16,13 @@ class ItemController extends Controller
         $items = Item::all();
         return view('manageitem.manage', compact('items'));
     }
-    
+
     public function create()
     {
         $suppliers = Supplier::all();
         return view('manageitem.create', compact('suppliers'));
     }
-   
+
     // public function store(Request $request)
     // {
     //     $attributes = request()->validate([
@@ -79,5 +79,65 @@ class ItemController extends Controller
 
         // Optionally, you can redirect the user after successful submission
         return redirect()->route('item')->with('success', 'Item added successfully!');
+    }
+
+    public function edit($id)
+    {
+        $item = Item::find($id);
+        return view('manageitem.edit', compact('item'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $item = Item::findOrFail($id);
+
+        // Validate the form data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'quantity' => 'required|integer',
+            'unit' => 'required|string|max:10',
+            'price1' => 'required|numeric',
+            'price2' => 'nullable|numeric',
+            'price3' => 'nullable|numeric',
+            'minlevel' => 'nullable|integer',
+            'pic' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Check if a new file has been uploaded
+        if ($request->hasFile('pic')) {
+            // Delete old image if a new one is uploaded
+            if ($item->pic) {
+                Storage::delete('public/' . $item->pic);
+            }
+
+            // Store the new image
+            $imagePath = $request->file('pic')->store('items', 'public');
+            $item->pic = $imagePath;
+        } else {
+            // Retain the old image
+            $item->pic = $request->input('old_pic');
+        }
+
+        // Update other item details
+        $item->name = $request->input('name');
+        $item->description = $request->input('description');
+        $item->quantity = $request->input('quantity');
+        $item->unit = $request->input('unit');
+        $item->price1 = $request->input('price1');
+        $item->price2 = $request->input('price2');
+        $item->price3 = $request->input('price3');
+        $item->minlevel = $request->input('minlevel');
+
+        // Save the updated item
+        $item->save();
+
+        // Redirect with a success message
+        return redirect()->route('item')->with('success', 'Item updated successfully');
+    }
+
+    public function destroy($id){
+        Item::find($id)->delete();
+        return redirect()->route('item');
     }
 }

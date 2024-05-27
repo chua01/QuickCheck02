@@ -57,7 +57,7 @@
                                     <td class="align-middle text-end">
                                         <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                                             <a class="text-sm font-weight-bold mb-0" href="{{route('user.edit', ['id' => $user->id])}}">Edit</a>
-                                            <a class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                            <a class="text-sm font-weight-bold mb-0 ps-2"  href="{{route('user.destroy', ['id' => $user->id])}}">Delete</a>
                                         </div>
                                     </td>
                                 </tr>

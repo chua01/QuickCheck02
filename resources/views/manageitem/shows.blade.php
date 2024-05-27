@@ -48,7 +48,10 @@
                         <div class="card-header pb-0">
                             <div class="d-flex align-items-center">
                                 <p class="mb-0">New Item</p>
-                               
+                                <div class="ms-auto">
+                                    <a href="{{route('item.delete', ['id' => $item->id])}}" onclick="return confirm('Do you want to delete item {{$item->name}}? Item will be deleted permanently')" class="btn btn-danger btn-sm ms-auto">Delete</a>
+                                    <a href="{{route('item.edit', ['id' => $item->id])}}" class="btn btn-info btn-sm ms-auto">Edit</a>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">

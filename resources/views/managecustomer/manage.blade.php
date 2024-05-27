@@ -42,10 +42,12 @@
                                                 <div>
                                                     <img src="./img/team-1.jpg" class="avatar me-3" alt="image">
                                                 </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0">{{ $customer->name }}</h6>
-                                                    <p class="text-sm mb-0">{{ $customer->email }}</p>
-                                                </div>
+                                                <a href="">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0">{{ $customer->name }}</h6>
+                                                        <p class="text-sm mb-0">{{ $customer->email }}</p>
+                                                    </div>
+                                                </a>
                                             </div>
                                         </td>
                                         <td>
@@ -60,8 +62,8 @@
                                         </td>
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                <p class="text-sm font-weight-bold mb-0">Edit</p>
-                                                <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p>
+                                                <a class="text-sm font-weight-bold mb-0" href="{{route('customer.edit', ['id' => $customer->id])}}">Edit</a>
+                                                <a class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                             </div>
                                         </td>
                                     </tr>

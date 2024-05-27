@@ -58,17 +58,25 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/user', [RegisterController::class, 'index'])->name('user');
 	Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
 	Route::get('/user/edit/{id}', [RegisterController::class, 'edit'])->name('user.edit');
+	Route::post('/user/update/{id}', [RegisterController::class, 'update'])->name('user.update');
+	Route::get('/user/delete/{id}', [RegisterController::class, 'destroy'])->name('user.destroy');
+
 
 	// item
 	Route::get('/item', [ItemController::class, 'index'])->name('item');
 	Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
 	Route::post('/item/store', [ItemController::class, 'store'])->name('item.store');
 	Route::get('/item/show/{id}', [ItemController::class, 'show'])->name('item.show');
+	Route::get('/item/edit/{id}', [ItemController::class, 'edit'])->name('item.edit');
+	Route::post('/item/update/{id}', [ItemController::class, 'update'])->name('item.update');
+	Route::get('/item/delete/{id}', [ItemController::class, 'destroy'])->name('item.delete');
 
 	// customer
 	Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
 	Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
 	Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+	Route::get('/customer/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+	Route::post('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
 
 	// supplier
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');

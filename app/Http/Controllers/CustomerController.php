@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Contact;
 use App\Models\Customer;
+use Google\Cloud\Vision\Connection\Rest;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -60,4 +61,26 @@ class CustomerController extends Controller
         return redirect()->route('customer')->with('success', 'Item added successfully!');
     }
     
+    public function edit($id){
+        $customer = Customer::find($id);
+        return view('managecustomer.edit', compact('customer'));
+    }
+    
+    public function update(Request $request, $id){
+        $customer = Customer::find($id);
+        $customer->contact->first()->update([
+            'contactnumber' => $request->contactno,
+        ]);
+        $customer->address->update([
+            'location' => $request->location,
+            'code' => $request->code,
+            'street' => $request->street,
+            'state' => $request->state,
+        ]);
+        $customer->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+        return redirect()->route('customer');
+    }
 }
