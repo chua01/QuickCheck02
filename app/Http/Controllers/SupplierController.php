@@ -59,4 +59,26 @@ class SupplierController extends Controller
         return redirect()->route('supplier')->with('success', 'Item added successfully!');
     }
     
+    public function edit($id){
+        $supplier = Supplier::find($id);
+        return view('managesupplier.edit', compact('supplier'));
+    }
+    
+    public function update(Request $request, $id){
+        $supplier = Supplier::find($id);
+        $supplier->contact->first()->update([
+            'contactnumber' => $request->contactno,
+        ]);
+        $supplier->address->update([
+            'location' => $request->location,
+            'code' => $request->code,
+            'street' => $request->street,
+            'state' => $request->state,
+        ]);
+        $supplier->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+        return redirect()->route('supplier');
+    }
 }

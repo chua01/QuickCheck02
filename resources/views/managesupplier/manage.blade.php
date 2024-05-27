@@ -60,8 +60,8 @@
                                         </td>
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                <p class="text-sm font-weight-bold mb-0">Edit</p>
-                                                <p class="text-sm font-weight-bold mb-0 ps-2">Delete</p>
+                                                <a href="{{route('supplier.edit',['id'=>$supplier->id] )}}" class="text-sm font-weight-bold mb-0">Edit</a>
+                                                <a class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                             </div>
                                         </td>
                                     </tr>
