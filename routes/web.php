@@ -93,13 +93,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/salesorder', [SalesOrderController::class, 'index'])->name('salesorder');
 	Route::get('/salesorder/create', [SalesOrderController::class, 'create'])->name('salesorder.create');
 	Route::post('/salesorder/store', [SalesOrderController::class, 'store'])->name('salesorder.store');
-	Route::get('/salesorder/addItem/{id}', [SalesOrderController::class, 'addItem'])->name('addItem');
 	Route::get('/imagelabel', [SalesOrderController::class, 'imagelabel'])->name('imagelabel');
+	Route::post('/salesorder/addItem/{id}', [SalesOrderController::class, 'addItem'])->name('salesorder.addItem');
+	Route::post('/salesorder/updateOrderItem/{id}', [SalesOrderController::class, 'updateOrderItem'])->name('salesorder.updateOrderItem');
+	Route::get('/salesorder/editOrderInfo1/{id}', [SalesOrderController::class, 'editOrderInfo1'])->name('salesorder.editOrderInfo1');
+	Route::post('/salesorder/updateOrderInfo1/{id}', [SalesOrderController::class, 'updateOrderInfo1'])->name('salesorder.updateOrderInfo1');
 
-	Route::get('/form', [SalesOrderController::class, 'showForm'])->name('show.form');
+	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
 	Route::post('/save-permanent', [SalesOrderController::class, 'savePermanently'])->name('save.permanent');
-	Route::post('/trysee2', [SalesOrderController::class, 'trysee2'])->name('trysee2');
+	// Route::post('/trysee2', [SalesOrderController::class, 'trysee2'])->name('trysee2');
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 });

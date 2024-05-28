@@ -160,6 +160,17 @@ class DatabaseSeeder extends Seeder
                 'minlevel' => '10',
                 'unit' => 'pcs',
             ],
+            [
+                'name' => 'Screw 2 inches',
+                'price1' => '25.00',
+                'price2' => '23.00',
+                'price3' => '20.00',
+                'pic' => 'public/images/screw.webp',
+                'description' => 'screw 2 inches with blah blah blah',
+                'quantity' => '100',
+                'minlevel' => '10',
+                'unit' => 'pcs',
+            ],
         ];
 
         foreach ($items as $item) {

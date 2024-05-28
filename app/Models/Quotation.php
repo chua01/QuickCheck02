@@ -17,6 +17,7 @@ class Quotation extends Model
         'date',
         'discount',
         'extra_fee',
+        'delivery',
     ];
 
     public function customerItem()
@@ -27,5 +28,10 @@ class Quotation extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function deliveryaddress()
+    {
+        return $this->hasOne(Address::class, 'id','delivery_address');
     }
 }

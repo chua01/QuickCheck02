@@ -65,7 +65,7 @@
                                         </td>
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                <p class="text-sm font-weight-bold mb-0">Edit</p>
+                                                <a class="text-sm font-weight-bold mb-0" href="{{route('salesorder.show', ['id' => $quotation->id])}}">Edit</a>
                                                 <p class="text-sm font-weight-bold mb-0 ps-2">Print</p>
                                             </div>
                                         </td>

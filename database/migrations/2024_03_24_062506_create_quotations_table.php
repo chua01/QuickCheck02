@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('date')->nullable();
             $table->double('discount')->nullable();
             $table->double('extra_fee')->nullable();
+            $table->enum('delivery',['yes', 'no'])->nullable();
             $table->timestamps();
         });
     }
