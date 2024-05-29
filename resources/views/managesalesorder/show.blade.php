@@ -108,7 +108,7 @@
                                                     </td>
                                                     <td class="align-middle text-end">
                                                         <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                            <a href="" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                            <a href="{{route('salesorder.deleteOrderItem', ['id' => $orderitem->id])}}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -162,22 +162,34 @@
                                             <table class="table table-borderless mb-0">
                                                 <tbody class="text-start">
                                                     <tr>
+                                                        <td class="text-start"><label for="extra_fee" class="form-control-label">Items Total (RM):</label></td>
+                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06 + $quotation->discount - $quotation->extra_fee , 2) }}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="text-start"><label for="extra_fee" class="form-control-label">Extra Fee (RM):</label></td>
-                                                        <td class="text-start">{{ $quotation->extra_fee }}</td>
+                                                        <td class="text-start">{{ number_format($quotation->extra_fee, 2) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-start"><label for="extra_fee" class="form-control-label">Total before discount (RM):</label></td>
+                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06 + $quotation->discount , 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="discount" class="form-control-label">Discount (RM):</label></td>
-                                                        <td class="text-start">{{ $quotation->discount }}</td>
+                                                        <td class="text-start">- {{ number_format($quotation->discount, 2) }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-start"><label for="amount" class="form-control-label">Amount (RM):</label></td>
-                                                        <td class="text-start">{{ $quotation->amount }}</td>
+                                                        <td class="text-start"><label for="tax" class="form-control-label">Tax (RM):</label></td>
+                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06, 2) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-start"><label for="amount" class="form-control-label">Amount Charged (RM):</label></td>
+                                                        <td class="text-start">{{ number_format($quotation->amount,2) }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="col-8 text-end">
-                                            <a href="" class="btn btn-info">Edit</a>
+                                            <a href="{{route('salesorder.editOrderInfo2', ['id' => $quotation->id])}}" class="btn btn-info">Edit</a>
                                         </div>
                                     </div>
                                 </div>

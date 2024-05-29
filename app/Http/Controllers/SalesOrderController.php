@@ -12,6 +12,7 @@ use App\Models\SalesOrder;
 use Carbon\Carbon;
 use Google\Cloud\Vision\Connection\Rest;
 use Illuminate\Http\Request;
+use Termwind\Components\Raw;
 
 class SalesOrderController extends Controller
 {
@@ -192,7 +193,17 @@ class SalesOrderController extends Controller
         $quotation = Quotation::find($id);
         // dd($quotation->deliveryaddress);
         $customers = Customer::with('address', 'contact')->get();
-        return view('managesalesorder.editcustomer', compact('quotation', 'customers'));
+        return view('managesalesorder.editOrderInfo1', compact('quotation', 'customers'));
+    }
+   
+    public function editOrderInfo2($id)
+    {
+        $quotation = Quotation::find($id);
+        $itemstotal = 0;
+        foreach($quotation->customeritem as $item){
+            $itemstotal += $item->amount * $item->quantity;
+        }
+        return view('managesalesorder.editOrderInfo2', compact('quotation', 'itemstotal'));
     }
 
     public function updateOrderInfo1(Request $request, $id)
@@ -259,4 +270,29 @@ class SalesOrderController extends Controller
         }
         return redirect()->route('salesorder.show', $id);
     }
+
+    public function updateOrderInfo2(Request $request, $id){
+        $quotation = Quotation::find($id);
+        $quotation->update([
+            'extra_fee'=>$request->extrafee,
+            'discount'=>$request->discount,
+        ]);
+        $amount = $this->calculateTotal($quotation->customeritem, $quotation->extra_fee, $quotation->discount);
+        $quotation->update([
+            'amount' => $amount,
+        ]);
+        return redirect()->route('salesorder.show', $id);
+    }
+
+    public function deleteOrderItem($id){
+        $item = CustomerOrderItem::find($id);
+        $quotation = Quotation::find($item->quotation_id);
+        $item->delete();
+        $amount = $this->calculateTotal($quotation->customeritem, $quotation->extra_fee, $quotation->discount);
+        $quotation->update([
+            'amount' => $amount,
+        ]);
+        return redirect()->route('salesorder.show', $id);
+    }
+        
 }

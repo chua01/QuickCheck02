@@ -98,6 +98,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/salesorder/updateOrderItem/{id}', [SalesOrderController::class, 'updateOrderItem'])->name('salesorder.updateOrderItem');
 	Route::get('/salesorder/editOrderInfo1/{id}', [SalesOrderController::class, 'editOrderInfo1'])->name('salesorder.editOrderInfo1');
 	Route::post('/salesorder/updateOrderInfo1/{id}', [SalesOrderController::class, 'updateOrderInfo1'])->name('salesorder.updateOrderInfo1');
+	Route::get('/salesorder/editOrderInfo2/{id}', [SalesOrderController::class, 'editOrderInfo2'])->name('salesorder.editOrderInfo2');
+	Route::post('/salesorder/updateOrderInfo2/{id}', [SalesOrderController::class, 'updateOrderInfo2'])->name('salesorder.updateOrderInfo2');
+	Route::get('/salesorder/deleteOrderItem/{id}', [SalesOrderController::class, 'deleteOrderItem'])->name('salesorder.deleteOrderItem');
 
 	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
