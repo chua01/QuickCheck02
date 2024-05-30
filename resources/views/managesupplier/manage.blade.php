@@ -38,15 +38,18 @@
                                 @foreach ($suppliers as $supplier)
                                     <tr>
                                         <td>
-                                            <div class="d-flex px-3 py-1">
-                                                <div>
-                                                    <img src="./img/team-1.jpg" class="avatar me-3" alt="image">
+                                            <a href="{{route('supplier.show', ['id' => $supplier->id])}}">
+
+                                                <div class="d-flex px-3 py-1">
+                                                    <div>
+                                                        <img src="./img/team-1.jpg" class="avatar me-3" alt="image">
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0">{{ $supplier->name }}</h6>
+                                                        <p class="text-sm mb-0">{{ $supplier->email }}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0">{{ $supplier->name }}</h6>
-                                                    <p class="text-sm mb-0">{{ $supplier->email }}</p>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </td>
                                         <td>
                                             <p class="font-weight-bold mb-0">

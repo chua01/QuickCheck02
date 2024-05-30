@@ -77,11 +77,15 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
 	Route::get('/customer/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
 	Route::post('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
+	Route::get('/customer/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
+	Route::get('/customer/showOrder/{id}', [CustomerController::class, 'showOrder'])->name('customer.showOrder');
 
 	// supplier
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
 	Route::post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store');
+	Route::get('/supplier/show/{id}', [SupplierController::class, 'show'])->name('supplier.show');
+	Route::get('/supplier/itemList/{id}', [SupplierController::class, 'itemList'])->name('supplier.itemList');
 	Route::get('/supplier/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
 	Route::post('/supplier/update{id}', [SupplierController::class, 'update'])->name('supplier.update');
 	

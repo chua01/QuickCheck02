@@ -25,4 +25,13 @@ class Supplier extends Model
     {
         return $this->belongsTo(Address::class);
     }
+
+    public function supply()
+    {
+        return $this->hasMany(ItemSupplier::class,'supplier_id');
+    }
+
+    public function purchaseorder(){
+        return $this->hasMany(PurchaseOrder::class,'supplier_id');
+    }
 }

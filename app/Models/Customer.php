@@ -27,4 +27,8 @@ class Customer extends Model
     {
         return $this->belongsTo(Address::class);
     }
+
+    public function customerorder(){
+        return $this->hasMany(Quotation::class, 'customer_id');
+    }
 }

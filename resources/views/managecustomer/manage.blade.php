@@ -42,7 +42,7 @@
                                                 <div>
                                                     <img src="./img/team-1.jpg" class="avatar me-3" alt="image">
                                                 </div>
-                                                <a href="">
+                                                <a href="{{route('customer.show', ['id'=>$customer->id])}}">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0">{{ $customer->name }}</h6>
                                                         <p class="text-sm mb-0">{{ $customer->email }}</p>

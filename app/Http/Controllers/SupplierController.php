@@ -81,4 +81,17 @@ class SupplierController extends Controller
         ]);
         return redirect()->route('supplier');
     }
+
+    public function show($id){
+        $supplier = Supplier::find($id);
+        // dd($supplier->supply, $supplier->purchaseorder);
+        $totalItemSupply = $supplier->supply->count();
+        $totalPurchaseOrder = $supplier->purchaseorder->count();
+        return view('managesupplier.show', compact('supplier', 'totalItemSupply','totalPurchaseOrder'));
+    }
+
+    public function itemList($id){
+        $items = Supplier::find($id)->supply;
+        return view('managesupplier.itemList', compact('items'));
+    }
 }
