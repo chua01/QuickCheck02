@@ -55,6 +55,7 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
+        dd($request);
         // Validate the request data
         $validatedData = $request->validate([
             // 'pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // assuming pic is the name of the file input

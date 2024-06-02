@@ -11,7 +11,7 @@
                     position: relative;
                     display: inline-block;
                 }
-            
+
                 .file-upload-input {
                     position: absolute;
                     left: 0;
@@ -21,7 +21,7 @@
                     opacity: 0;
                     cursor: pointer;
                 }
-            
+
                 .file-upload-image {
                     width: 100%;
                     height: auto;
@@ -30,17 +30,20 @@
                     box-sizing: border-box;
                     display: block;
                     border-radius: 10px;
-                    /* Make the image square */
                     aspect-ratio: 1/1;
                     object-fit: cover;
                 }
-            
+
                 .file-upload-image:hover {
                     opacity: 0.7;
                 }
+
+                #loading-message {
+                    display: none;
+                    font-weight: bold;
+                    color: red;
+                }
             </style>
-            
-            {{-- @style() --}}
 
             <div class="row">
                 <div class="col-md-12">
@@ -48,7 +51,7 @@
                         <div class="card-header pb-0">
                             <div class="d-flex align-items-center">
                                 <p class="mb-0">New Item</p>
-                                <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
+                                <button id="submit-button" class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -56,28 +59,91 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="file-upload-container">
-                                            <input class="form-control file-upload-input" type="file" id="pic" name="pic" onchange="displayImage(event)">
+                                            <input class="form-control file-upload-input" type="file" id="pic" name="pic" onchange="handleImageUpload(event)">
                                             <img id="selected-image" class="file-upload-image" src="{{ asset('img/plus.png') }}" alt="Upload Photo">
                                         </div>
                                     </div>
                                 </div>
-                                
+
+                                <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+                                <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
                                 <script>
-                                    function displayImage(event) {
+                                    let model;
+                                    let imageElement = null;
+
+                                    document.addEventListener("DOMContentLoaded", async () => {
+                                        console.log("Loading model...");
+                                        model = await mobilenet.load();
+                                        console.log("Model loaded.");
+                                        if (imageElement) {
+                                            classifyImage(imageElement);
+                                        }
+                                    });
+
+                                    function handleImageUpload(event) {
                                         var input = event.target;
                                         if (input.files && input.files[0]) {
+                                            document.getElementById('loading-message').style.display = 'block';
+                                            document.getElementById('submit-button').disabled = true;
+
                                             var reader = new FileReader();
                                             reader.onload = function (e) {
                                                 var imgElement = document.getElementById('selected-image');
                                                 imgElement.src = e.target.result;
+                                                imageElement = imgElement;
+                                                imgElement.onload = function() {
+                                                    if (model) {
+                                                        classifyImage(imgElement);
+                                                    }
+                                                };
                                             };
                                             reader.readAsDataURL(input.files[0]);
+                                        } else {
+                                            document.getElementById('classification-results').value = '';
+                                            document.getElementById('submit-button').disabled = false;
                                         }
                                     }
-                                </script>
-                                
 
-                              
+                                    async function classifyImage(imgElement) {
+                                        if (model) {
+                                            console.log("Classifying image...");
+                                            try {
+                                                // Clear previous predictions
+                                                document.getElementById('predictions-container').innerHTML = '';
+
+                                                // Ensure the image is loaded and has proper dimensions
+                                                imgElement.width = imgElement.width || 224;
+                                                imgElement.height = imgElement.height || 224;
+
+                                                // Classify the image
+                                                const predictions = await model.classify(imgElement);
+                                                console.log('Predictions:', predictions);
+                                                displayPredictions(predictions);
+                                                document.getElementById('classification-results').value = JSON.stringify(predictions);
+                                            } catch (error) {
+                                                console.error("Error during classification:", error);
+                                            }
+                                            document.getElementById('loading-message').style.display = 'none';
+                                            document.getElementById('submit-button').disabled = false;
+                                        } else {
+                                            console.error("Model is not loaded yet.");
+                                        }
+                                    }
+
+                                    function displayPredictions(predictions) {
+                                        const predictionsContainer = document.getElementById('predictions-container');
+                                        predictionsContainer.innerHTML = '';
+                                        predictions.forEach(prediction => {
+                                            const p = document.createElement('p');
+                                            p.textContent = `${prediction.className}: ${prediction.probability.toFixed(2)}`;
+                                            predictionsContainer.appendChild(p);
+                                        });
+                                    }
+                                </script>
+
+                                <div id="predictions-container"></div>
+                                <input type="hidden" id="classification-results" name="classification_results">
+                                <div id="loading-message">Classifying image, please wait...</div>
                             </div>
                             <p class="text-uppercase text-sm">User Information</p>
                             <div class="row">
@@ -101,7 +167,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="example-select" class="form-control-label">unit</label>
+                                        <label for="example-select" class="form-control-label">Unit</label>
                                         <select class="form-control" name="unit" id="example-select">
                                             <option value="pcs">pcs</option>
                                             <option value="kg">kg</option>
@@ -111,7 +177,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 1</label>
@@ -146,5 +212,4 @@
         </form>
         @include('layouts.footers.auth.footer')
     </div>
-    
 @endsection
