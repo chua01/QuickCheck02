@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('purchaseorder_id')->nullable();
+            $table->foreignId('item_id')->nullable();
+            $table->double('amount')->nullable();
+            $table->double('quantity')->nullable();
             $table->timestamps();
         });
     }

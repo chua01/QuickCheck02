@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->nullable();
-            $table->foreignId('issued_by')->nullable();
+            $table->enum('status', ['on going','complete'])->nullable();
+            $table->double('amount')->nullable();
             $table->date('date')->nullable();
+            $table->double('discount')->nullable();
+            $table->double('extra_fee')->nullable();
             $table->timestamps();
         });
     }

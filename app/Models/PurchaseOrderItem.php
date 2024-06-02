@@ -14,5 +14,10 @@ class PurchaseOrderItem extends Model
         'purchaseorder_id',
         'item_id',
         'quantity',
+        'amount'
     ];
+
+    public function item(){
+        return $this->belongsTo(Item::class);
+    }
 }

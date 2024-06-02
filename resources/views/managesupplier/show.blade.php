@@ -73,6 +73,17 @@
                         </div>
                         <br>
                         <p class="text-sm">Purchase Order</p>
+                        @foreach($supplier->purchaseorder as $order)
+                        <a class="card border mb-2" href="{{route('supplier.showOrder', ['id' => $order->id])}}">
+                            <div class="row card-body">
+                                <div class="col-2">{{$order->id}}</div>
+                                <div class="col-4">{{$order->updated_at}}</div>
+                                <div class="col-4">RM {{number_format($order->amount,2)}}</div>
+                                <div class="col-2">completed</div>
+                                {{-- <div class="col-4">{{$order->id}}</div> --}}
+                            </div>
+                        </a>
+                        @endforeach
                         {{-- <label for="">Purchase Order</label> --}}
                     </div>
                 </div>

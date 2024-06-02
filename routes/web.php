@@ -27,8 +27,10 @@ use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemSupplierController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
+use App\Models\PurchaseOrder;
 
 Route::get('/', function () {
 	return redirect('/dashboard');
@@ -79,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
 	Route::get('/customer/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
 	Route::get('/customer/showOrder/{id}', [CustomerController::class, 'showOrder'])->name('customer.showOrder');
-
+	
 	// supplier
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
@@ -88,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/supplier/itemList/{id}', [SupplierController::class, 'itemList'])->name('supplier.itemList');
 	Route::get('/supplier/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
 	Route::post('/supplier/update{id}', [SupplierController::class, 'update'])->name('supplier.update');
+	Route::get('/supplier/showOrder/{id}', [SupplierController::class, 'showOrder'])->name('supplier.showOrder');
 	
 	//item supplier
 	Route::post('/itemsupplier/store/{id}', [ItemSupplierController::class, 'store'])->name('itemSupplier.store');
@@ -105,10 +108,25 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/salesorder/editOrderInfo2/{id}', [SalesOrderController::class, 'editOrderInfo2'])->name('salesorder.editOrderInfo2');
 	Route::post('/salesorder/updateOrderInfo2/{id}', [SalesOrderController::class, 'updateOrderInfo2'])->name('salesorder.updateOrderInfo2');
 	Route::get('/salesorder/deleteOrderItem/{id}', [SalesOrderController::class, 'deleteOrderItem'])->name('salesorder.deleteOrderItem');
-
+	
 	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
 	Route::post('/save-permanent', [SalesOrderController::class, 'savePermanently'])->name('save.permanent');
+	
+	//purchase order
+	Route::get('/purchaseorder', [PurchaseOrderController::class, 'index'])->name('purchaseorder');
+	Route::get('/purchaseorder/create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');
+	Route::post('/purchaseorder/store', [PurchaseOrderController::class, 'store'])->name('purchaseorder.store');
+	Route::get('/purchaseorder/show/{id}', [PurchaseOrderController::class, 'show'])->name('purchaseorder.show');
+	// Route::get('/imagelabel', [PurchaseOrderController::class, 'imagelabel'])->name('imagelabel');
+	Route::post('/purchaseorder/addItem/{id}', [PurchaseOrderController::class, 'addItem'])->name('purchaseorder.addItem');
+	Route::post('/purchaseorder/updateOrderItem/{id}', [PurchaseOrderController::class, 'updateOrderItem'])->name('purchaseorder.updateOrderItem');
+	Route::get('/purchaseorder/editOrderInfo1/{id}', [PurchaseOrderController::class, 'editOrderInfo1'])->name('purchaseorder.editOrderInfo1');
+	Route::post('/purchaseorder/updateOrderInfo1/{id}', [PurchaseOrderController::class, 'updateOrderInfo1'])->name('purchaseorder.updateOrderInfo1');
+	Route::get('/purchaseorder/editOrderInfo2/{id}', [PurchaseOrderController::class, 'editOrderInfo2'])->name('purchaseorder.editOrderInfo2');
+	Route::post('/purchaseorder/updateOrderInfo2/{id}', [PurchaseOrderController::class, 'updateOrderInfo2'])->name('purchaseorder.updateOrderInfo2');
+	Route::get('/purchaseorder/deleteOrderItem/{id}', [PurchaseOrderController::class, 'deleteOrderItem'])->name('purchaseorder.deleteOrderItem');
+
 	// Route::post('/trysee2', [SalesOrderController::class, 'trysee2'])->name('trysee2');
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');

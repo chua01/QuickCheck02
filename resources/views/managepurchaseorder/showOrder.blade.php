@@ -17,7 +17,7 @@
                                     <a href=""
                                         onclick="return confirm('Do you want to delete item? Item will be deleted permanently')"
                                         class="btn btn-danger btn-sm ms-auto">Delete</a>
-                                    <a href="" class="btn btn-info btn-sm ms-auto">Edit</a>
+                                    <a href="{{route('customer.show', ['id'=>$quotation->customer_id])}}" class="btn btn-info btn-sm ms-auto">Back</a>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="tax" class="form-control-label">Tax (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06*0.06, 2) }}</td>
+                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06, 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="amount" class="form-control-label">Amount Charged (RM):</label></td>

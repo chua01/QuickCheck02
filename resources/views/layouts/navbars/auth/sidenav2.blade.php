@@ -59,11 +59,11 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'note' ? 'active' : '' }}" href="">
+                <a class="nav-link {{ Route::currentRouteName() == 'note' ? 'active' : '' }}" href="{{route('purchaseorder')}}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-file-alt text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Credit/Debit Notes</span>
+                    <span class="nav-link-text ms-1">Manage Purchase Order</span>
                 </a>
             </li>
 

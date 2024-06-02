@@ -4,7 +4,7 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Add Item'])
 
     <div class="container-fluid py-4">
-        <form method="POST" action="{{route('salesorder.updateOrderItem', ['id' => $quotation->id])}}" enctype="multipart/form-data">
+        <form method="POST" action="{{route('purchaseorder.updateOrderItem', ['id' => $purchaseorder->id])}}" enctype="multipart/form-data">
             @csrf
 
             <div class="row">
@@ -27,27 +27,27 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <p class="mb-0">{{ $quotation->customer->name }}</p>
-                                                <p class="mb-0">{{ $quotation->customer->email }}</p>
-                                                <p class="mb-4">{{ $quotation->customer->contact->first()->contactnumber }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->supplier->name }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->supplier->email }}</p>
+                                                <p class="mb-4">{{ $purchaseorder->supplier->contact->first()->contactnumber }}</p>
                                                 <label for="example-text-input" class="form-control-label">Billing Address</label>
-                                                <p class="mb-0">{{ $quotation->customer->address->location }}</p>
-                                                <p class="mb-0">{{ $quotation->customer->address->code }}</p>
-                                                <p class="mb-0">{{ $quotation->customer->address->street }}</p>
-                                                <p class="mb-0">{{ $quotation->customer->address->state }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->supplier->address->location }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->supplier->address->code }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->supplier->address->street }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->supplier->address->state }}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 d-flex flex-column justify-content-between">
                                             <div class="d-flex justify-content-end mb-3">
-                                                <a href="{{route('salesorder.editOrderInfo1', ['id'=>$quotation->id])}}" class="btn btn-info">Edit</a>
+                                                <a href="{{route('purchaseorder.editOrderInfo1', ['id'=>$purchaseorder->id])}}" class="btn btn-info">Edit</a>
                                             </div>
-                                            @if($quotation->deliveryaddress !== null)
+                                            @if($purchaseorder->deliveryaddress !== null)
                                             <div class="form-group">
                                                 <label for="example-text-input" class="form-control-label">Delivery Address</label>
-                                                <p class="mb-0">{{ $quotation->deliveryaddress->location }}</p>
-                                                <p class="mb-0">{{ $quotation->deliveryaddress->code }}</p>
-                                                <p class="mb-0">{{ $quotation->deliveryaddress->street }}</p>
-                                                <p class="mb-0">{{ $quotation->deliveryaddress->state }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->deliveryaddress->location }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->deliveryaddress->code }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->deliveryaddress->street }}</p>
+                                                <p class="mb-0">{{ $purchaseorder->deliveryaddress->state }}</p>
                                             </div>
                                             @endif
                                         </div>
@@ -74,7 +74,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($quotation->customeritem as $orderitem)
+                                            @foreach ($purchaseorder->orderitems as $orderitem)
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex px-3 py-1">
@@ -108,13 +108,13 @@
                                                     </td>
                                                     <td class="align-middle text-end">
                                                         <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                            <a href="{{route('salesorder.deleteOrderItem', ['id' => $orderitem->id])}}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                            <a href="{{route('purchaseorder.deleteOrderItem', ['id' => $orderitem->id])}}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                             </form>
-                                            <form method="POST" action="{{ route('salesorder.addItem', ['id' => $quotation->id]) }}" enctype="multipart/form-data">
+                                            <form method="POST" action="{{ route('purchaseorder.addItem', ['id' => $purchaseorder->id]) }}" enctype="multipart/form-data">
                                                 @csrf
                                                 <tr>
                                                     <td>
@@ -163,33 +163,33 @@
                                                 <tbody class="text-start">
                                                     <tr>
                                                         <td class="text-start"><label for="extra_fee" class="form-control-label">Items Total (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06 + $quotation->discount - $quotation->extra_fee , 2) }}</td>
+                                                        <td class="text-start">{{ number_format($purchaseorder->amount / 1.06 + $purchaseorder->discount - $purchaseorder->extra_fee , 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="extra_fee" class="form-control-label">Extra Fee (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($quotation->extra_fee, 2) }}</td>
+                                                        <td class="text-start">{{ number_format($purchaseorder->extra_fee, 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="extra_fee" class="form-control-label">Total before discount (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06 + $quotation->discount , 2) }}</td>
+                                                        <td class="text-start">{{ number_format($purchaseorder->amount / 1.06 + $purchaseorder->discount , 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="discount" class="form-control-label">Discount (RM):</label></td>
-                                                        <td class="text-start">- {{ number_format($quotation->discount, 2) }}</td>
+                                                        <td class="text-start">- {{ number_format($purchaseorder->discount, 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="tax" class="form-control-label">Tax (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($quotation->amount / 1.06*0.06, 2) }}</td>
+                                                        <td class="text-start">{{ number_format($purchaseorder->amount / 1.06 * 0.06, 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="amount" class="form-control-label">Amount Charged (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($quotation->amount,2) }}</td>
+                                                        <td class="text-start">{{ number_format($purchaseorder->amount,2) }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="col-8 text-end">
-                                            <a href="{{route('salesorder.editOrderInfo2', ['id' => $quotation->id])}}" class="btn btn-info">Edit</a>
+                                            <a href="{{route('purchaseorder.editOrderInfo2', ['id' => $purchaseorder->id])}}" class="btn btn-info">Edit</a>
                                         </div>
                                     </div>
                                 </div>

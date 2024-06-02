@@ -42,13 +42,8 @@ class SalesOrderController extends Controller
         return view('managesalesorder.imagelabel');
     }
 
-    public function show($id)
-    {
-        $items = Item::all();
-        $quotation = Quotation::find($id);
-        return view('managesalesorder.show', compact('quotation', 'items'));
-    }
-
+   
+    
     public function addItem(Request $request, $id)
     {
         if($request->orderitem!==null){

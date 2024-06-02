@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\Contact;
+use App\Models\Item;
+use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 
 class SupplierController extends Controller
@@ -93,5 +95,12 @@ class SupplierController extends Controller
     public function itemList($id){
         $items = Supplier::find($id)->supply;
         return view('managesupplier.itemList', compact('items'));
+    }
+
+    public function showOrder($id)
+    {
+        $items = Item::all();
+        $purchaseorder = PurchaseOrder::find($id);
+        return view('managesupplier.showOrder', compact('purchaseorder', 'items'));
     }
 }

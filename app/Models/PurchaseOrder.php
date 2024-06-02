@@ -13,6 +13,21 @@ class PurchaseOrder extends Model
         'id',
         'supplier_id',
         'date',
-        'issued_by',
+        'status',
+        'amount',
+        'date',
+        'discount',
+        'extra_fee',
     ];
+
+    
+    public function orderItems()
+    {
+        return $this->hasMany(PurchaseOrderItem::class, 'purchaseorder_id');
+    }
+    
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 }
