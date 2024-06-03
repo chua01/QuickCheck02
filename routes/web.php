@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/item/edit/{id}', [ItemController::class, 'edit'])->name('item.edit');
 	Route::post('/item/update/{id}', [ItemController::class, 'update'])->name('item.update');
 	Route::get('/item/delete/{id}', [ItemController::class, 'destroy'])->name('item.delete');
+	Route::get('/items/search', [ItemController::class, 'searchByTag']);
+
 
 	// customer
 	Route::get('/customer', [CustomerController::class, 'index'])->name('customer');

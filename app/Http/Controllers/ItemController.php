@@ -255,4 +255,14 @@ class ItemController extends Controller
         Item::find($id)->delete();
         return redirect()->route('item');
     }
+
+    public function searchByTag(Request $request)
+    {
+        $tag = $request->query('tag');
+        $items = Item::whereHas('tags', function ($query) use ($tag) {
+            $query->where('name', 'like', '%' . $tag . '%');
+        })->get();
+
+        return response()->json($items);
+    }
 }
