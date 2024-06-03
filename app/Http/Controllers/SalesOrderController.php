@@ -28,7 +28,7 @@ class SalesOrderController extends Controller
     {
         $customers = Customer::with('address', 'contact')->get();
         $items = Item::all(); // Fetch items from your database, adjust accordingly
-        return  view('managesalesorder.kalvin', compact('items', 'customers'));
+        return  view('managesalesorder.create', compact('items', 'customers'));
     }
 
     // public function addItem($id)
@@ -42,8 +42,13 @@ class SalesOrderController extends Controller
         return view('managesalesorder.imagelabel');
     }
 
-   
-    
+    public function show($id)
+    {
+        $items = Item::all();
+        $quotation = Quotation::find($id);
+        return view('managesalesorder.show', compact('quotation', 'items'));
+    }
+
     public function addItem(Request $request, $id)
     {
         if($request->orderitem!==null){

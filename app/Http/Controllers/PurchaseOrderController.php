@@ -24,7 +24,7 @@ class PurchaseOrderController extends Controller
         $suppliers = Supplier::with('address', 'contact', 'supply.item')->get();
         // dd($suppliers);
         $items = Item:: all();
-        return view('managepurchaseorder.kalvin', compact('suppliers', 'items'));
+        return view('managepurchaseorder.create', compact('suppliers', 'items'));
     }
 
     public function store(Request $request)
