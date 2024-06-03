@@ -12,5 +12,12 @@ class Tag extends Model
     protected $fillable = [
         'id',
         'name',
+        'item_tag'
     ];
+
+    public function items()
+{
+    return $this->belongsToMany(Item::class, 'tag_items');
+}
+
 }

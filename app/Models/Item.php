@@ -20,6 +20,12 @@ class Item extends Model
         'quantity',
         'minlevel',
         'unit',
+        'item_tag'
     ];
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tag_items');
+    }
+    
 }

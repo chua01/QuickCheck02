@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("item_tag")->nullable();
             $table->string('name')->nullable();
             $table->double('price1')->nullable();
             $table->double('price2')->nullable();

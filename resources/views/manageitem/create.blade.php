@@ -145,7 +145,7 @@
                                 <input type="hidden" id="classification-results" name="classification_results">
                                 <div id="loading-message">Classifying image, please wait...</div>
                             </div>
-                            <p class="text-uppercase text-sm">User Information</p>
+                            <p class="text-uppercase text-sm">Item Information</p>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
