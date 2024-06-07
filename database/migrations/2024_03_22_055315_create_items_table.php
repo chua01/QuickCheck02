@@ -22,7 +22,13 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->double('quantity')->nullable();
             $table->double('minlevel')->nullable();
-            $table->enum('unit', ['pcs', 'kg', 'meter', 'roll'])->nullable();
+            $table->enum('unit', [
+                'pcs', 'kg', 'meter', 'roll', 'liter', 'pack', 'box', 
+                'set', 'pair', 'gallon', 'carton', 'dozen', 'sheet', 
+                'bundle', 'tube', 'can', 'bag', 'barrel', 'foot', 
+                'inch', 'yard', 'gram', 'millimeter', 'centimeter', 
+                'square meter', 'cubic meter', 'ton'
+            ])->nullable();
             $table->timestamps();
         });
     }

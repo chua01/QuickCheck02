@@ -4,20 +4,28 @@ namespace App\Http\Controllers;
 
 // use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 // use Google\Rpc\Context\AttributeContext\Request;
 
 class RegisterController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return view('manageuser.manage',compact('users'));
+        if(Auth::user()->type == 'admin'){
+            $users = User::all();
+            return view('manageuser.manage',compact('users'));
+        }
+         return redirect()->intended('dashboard');
     }
 
 
     public function create()
     {
-        return view('manageuser.create');
+        if(Auth::user()->type == 'admin'){
+            return view('manageuser.create');
+        }
+        return redirect()->intended('dashboard');
     }
 
     public function store()
@@ -34,8 +42,11 @@ class RegisterController extends Controller
     }
 
     public function edit($id){
-        $user = User::find ($id);
-        return view('manageuser.edit', compact('user'));
+        if(Auth::user()->type == 'admin'){
+            $user = User::find ($id);
+            return view('manageuser.edit', compact('user'));
+        }
+        return redirect()->intended('dashboard');
     }
   
     public function update($id){

@@ -6,7 +6,7 @@
     <div class="container-fluid py-4">
         <form method="POST" action="{{ route('item.update', ['id' => $item->id]) }}" enctype="multipart/form-data">
             @csrf
-          
+
             <style>
                 .file-upload-container {
                     position: relative;
@@ -52,131 +52,167 @@
                         <div class="card-header pb-0">
                             <div class="d-flex align-items-center">
                                 <p class="mb-0">Edit Item</p>
-                                <button id="submit-button" class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
+                                <button id="submit-button" class="btn btn-primary btn-sm ms-auto"
+                                    type="submit">Submit</button>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="col-md-6">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="file-upload-container">
-                                            <input class="form-control file-upload-input" type="file" id="pic" name="pic" onchange="handleImageUpload(event)">
-                                            <img id="selected-image" class="file-upload-image" src="{{ $item->pic ? Storage::url($item->pic) : asset('img/plus.png') }}" alt="Upload Photo">
-                                            <input type="hidden" name="old_pic" value="{{ $item->pic }}">
-                                        </div>
+                                <div class="form-group">
+                                    <div class="file-upload-container">
+                                        <input class="form-control file-upload-input" type="file" id="pic"
+                                            name="pic" onchange="handleImageUpload(event)">
+                                        <img id="selected-image" class="file-upload-image"
+                                            src="{{ $item->pic ? Storage::url($item->pic) : asset('img/plus.png') }}"
+                                            alt="Upload Photo">
+                                        <input type="hidden" name="old_pic" value="{{ $item->pic }}">
                                     </div>
                                 </div>
-
-                                <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-                                <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
-                                <script>
-                                    let model;
-                                    let imageElement = document.getElementById('selected-image');
-
-                                    document.addEventListener("DOMContentLoaded", async () => {
-                                        console.log("Loading model...");
-                                        model = await mobilenet.load();
-                                        console.log("Model loaded.");
-                                        if (imageElement && imageElement.src !== '{{ asset('img/plus.png') }}') {
-                                            classifyImage(imageElement);
-                                        }
-                                    });
-
-                                    function handleImageUpload(event) {
-                                        var input = event.target;
-                                        if (input.files && input.files[0]) {
-                                            document.getElementById('loading-message').style.display = 'block';
-                                            document.getElementById('submit-button').disabled = true;
-
-                                            var reader = new FileReader();
-                                            reader.onload = function (e) {
-                                                var imgElement = document.getElementById('selected-image');
-                                                imgElement.src = e.target.result;
-                                                imageElement = imgElement;
-                                                imgElement.onload = function() {
-                                                    if (model) {
-                                                        classifyImage(imgElement);
-                                                    }
-                                                };
-                                            };
-                                            reader.readAsDataURL(input.files[0]);
-                                        } else {
-                                            document.getElementById('classification-results').value = '';
-                                            document.getElementById('submit-button').disabled = false;
-                                        }
-                                    }
-
-                                    async function classifyImage(imgElement) {
-                                        if (model) {
-                                            console.log("Classifying image...");
-                                            try {
-                                                // Clear previous predictions
-                                                document.getElementById('predictions-container').innerHTML = '';
-
-                                                // Ensure the image is loaded and has proper dimensions
-                                                imgElement.width = imgElement.width || 224;
-                                                imgElement.height = imgElement.height || 224;
-
-                                                // Classify the image
-                                                const predictions = await model.classify(imgElement);
-                                                console.log('Predictions:', predictions);
-                                                displayPredictions(predictions);
-                                                document.getElementById('classification-results').value = JSON.stringify(predictions);
-                                            } catch (error) {
-                                                console.error("Error during classification:", error);
-                                            }
-                                            document.getElementById('loading-message').style.display = 'none';
-                                            document.getElementById('submit-button').disabled = false;
-                                        } else {
-                                            console.error("Model is not loaded yet.");
-                                        }
-                                    }
-
-                                    function displayPredictions(predictions) {
-                                        const predictionsContainer = document.getElementById('predictions-container');
-                                        predictionsContainer.innerHTML = '';
-                                        predictions.forEach(prediction => {
-                                            const p = document.createElement('p');
-                                            p.textContent = `${prediction.className}: ${prediction.probability.toFixed(2)}`;
-                                            predictionsContainer.appendChild(p);
-                                        });
-                                    }
-                                </script>
-
-                                <div id="predictions-container"></div>
-                                <input type="hidden" id="classification-results" name="classification_results">
-                                <div id="loading-message">Classifying image, please wait...</div>
                             </div>
+
+                            <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+                            <script>
+                                let model;
+                                let imageElement = document.getElementById('selected-image');
+
+                                document.addEventListener("DOMContentLoaded", async () => {
+                                    console.log("Loading model...");
+                                    model = await mobilenet.load();
+                                    console.log("Model loaded.");
+                                    if (imageElement && imageElement.src !== '{{ asset('img/plus.png') }}') {
+                                        classifyImage(imageElement);
+                                    }
+                                });
+
+                                function handleImageUpload(event) {
+                                    var input = event.target;
+                                    if (input.files && input.files[0]) {
+                                        document.getElementById('loading-message').style.display = 'block';
+                                        document.getElementById('submit-button').disabled = true;
+
+                                        var reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            var imgElement = document.getElementById('selected-image');
+                                            imgElement.src = e.target.result;
+                                            imageElement = imgElement;
+                                            imgElement.onload = function() {
+                                                if (model) {
+                                                    classifyImage(imgElement);
+                                                }
+                                            };
+                                        };
+                                        reader.readAsDataURL(input.files[0]);
+                                    } else {
+                                        document.getElementById('classification-results').value = '';
+                                        document.getElementById('submit-button').disabled = false;
+                                    }
+                                }
+
+                                async function classifyImage(imgElement) {
+                                    if (model) {
+                                        console.log("Classifying image...");
+                                        try {
+                                            // Clear previous predictions
+                                            document.getElementById('predictions-container').innerHTML = '';
+
+                                            // Ensure the image is loaded and has proper dimensions
+                                            imgElement.width = imgElement.width || 224;
+                                            imgElement.height = imgElement.height || 224;
+
+                                            // Classify the image
+                                            const predictions = await model.classify(imgElement);
+                                            console.log('Predictions:', predictions);
+                                            displayPredictions(predictions);
+                                            document.getElementById('classification-results').value = JSON.stringify(predictions);
+                                        } catch (error) {
+                                            console.error("Error during classification:", error);
+                                        }
+                                        document.getElementById('loading-message').style.display = 'none';
+                                        document.getElementById('submit-button').disabled = false;
+                                    } else {
+                                        console.error("Model is not loaded yet.");
+                                    }
+                                }
+
+                                function displayPredictions(predictions) {
+                                    const predictionsContainer = document.getElementById('predictions-container');
+                                    predictionsContainer.innerHTML = '';
+                                    predictions.forEach(prediction => {
+                                        const p = document.createElement('p');
+                                        p.textContent = `${prediction.className}: ${prediction.probability.toFixed(2)}`;
+                                        predictionsContainer.appendChild(p);
+                                    });
+                                }
+                            </script>
+
+                            <div id="predictions-container"></div>
+                            <input type="hidden" id="classification-results" name="classification_results">
+                            <div id="loading-message">Classifying image, please wait...</div>
+
                             <p class="text-uppercase text-sm">Item Information</p>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Item Name</label>
-                                        <input class="form-control" type="text" name="name" value="{{ $item->name }}">
+                                        <input class="form-control" type="text" name="name"
+                                            value="{{ $item->name }}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Description</label>
-                                        <input class="form-control" type="text" name="description" value="{{ $item->description }}">
+                                        <input class="form-control" type="text" name="description"
+                                            value="{{ $item->description }}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Quantity</label>
-                                        <input class="form-control" type="number" name="quantity" value="{{ $item->quantity }}">
+                                        <input class="form-control" type="number" name="quantity"
+                                            value="{{ $item->quantity }}" required>
                                     </div>
                                 </div>
+                                @php
+                                    $units = [
+                                        'pcs',
+                                        'kg',
+                                        'meter',
+                                        'roll',
+                                        'liter',
+                                        'pack',
+                                        'box',
+                                        'set',
+                                        'pair',
+                                        'gallon',
+                                        'carton',
+                                        'dozen',
+                                        'sheet',
+                                        'bundle',
+                                        'tube',
+                                        'can',
+                                        'bag',
+                                        'barrel',
+                                        'foot',
+                                        'inch',
+                                        'yard',
+                                        'gram',
+                                        'millimeter',
+                                        'centimeter',
+                                        'square meter',
+                                        'cubic meter',
+                                        'ton',
+                                    ];
+                                @endphp
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-select" class="form-control-label">Unit</label>
-                                        <select class="form-control" name="unit" id="example-select">
-                                            <option value="{{ $item->unit }}" selected>{{ $item->unit }}</option>
-                                            <option value="pcs">pcs</option>
-                                            <option value="kg">kg</option>
-                                            <option value="meter">meter</option>
-                                            <option value="roll">roll</option>
-                                            <!-- Add more options as needed -->
+                                        <select class="form-control" name="unit" id="example-select" required>
+                                            @foreach ($units as $unit)
+                                                <option value="{{ $unit }}"
+                                                    {{ $item->unit == $unit ? 'selected' : '' }}>{{ $unit }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -184,25 +220,29 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 1</label>
-                                        <input class="form-control" type="text" name="price1" value="{{ $item->price1 }}">
+                                        <input class="form-control" type="number" step="0.01" name="price1"
+                                            value="{{ $item->price1 }}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 2</label>
-                                        <input class="form-control" type="text" name="price2" value="{{ $item->price2 }}">
+                                        <input class="form-control" type="number" step="0.01" name="price2"
+                                            value="{{ $item->price2 }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Price 3</label>
-                                        <input class="form-control" type="text" name="price3" value="{{ $item->price3 }}">
+                                        <input class="form-control" type="number" step="0.01" name="price3"
+                                            value="{{ $item->price3 }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Min Quantity</label>
-                                        <input class="form-control" type="text" name="minlevel" value="{{ $item->minlevel }}">
+                                        <input class="form-control" type="number" name="minlevel"
+                                            value="{{ $item->minlevel }}" required>
                                     </div>
                                 </div>
                             </div>
