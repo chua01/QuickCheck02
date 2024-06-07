@@ -30,15 +30,18 @@ class RegisterController extends Controller
 
     public function store()
     {
-        $attributes = request()->validate([
-            'username' => 'required|max:255|min:2',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|min:5|max:255',
-        ]);
-        $attributes['type'] = 'staff';
-        $user = User::create($attributes);
-
-        return redirect('/dashboard');
+        if(Auth::user()->type == 'admin'){
+            $attributes = request()->validate([
+                'username' => 'required|max:255|min:2',
+                'email' => 'required|email|max:255|unique:users,email',
+                'password' => 'required|min:5|max:255',
+            ]);
+            $attributes['type'] = 'staff';
+            User::create($attributes);
+    
+            return redirect('/dashboard');
+        }
+        return redirect()->intended('dashboard');
     }
 
     public function edit($id){
@@ -50,19 +53,26 @@ class RegisterController extends Controller
     }
   
     public function update($id){
-        $request = request();
-        $user = User::find ($id);
-        $user->update([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
-        return redirect()->route('user');
+        
+        if(Auth::user()->type == 'admin'){
+            $request = request();
+            $user = User::find ($id);
+            $user->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $request->password,
+            ]);
+            return redirect()->route('user');
+        }
+        return redirect()->intended('dashboard');
     }
 
     public function destroy($id){
-        $user = User::find($id);
-        $user->delete();
-        return redirect()->route('user');
+        if(Auth::user()->type == 'admin'){
+            $user = User::find($id);
+            $user->delete();
+            return redirect()->route('user');
+        }
+        return redirect()->intended('dashboard');
     }
 }
