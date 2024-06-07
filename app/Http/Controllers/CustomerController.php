@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Customer;
 use App\Models\Item;
 use App\Models\Quotation;
+use Barryvdh\DomPDF\PDF;
 use Google\Cloud\Vision\Connection\Rest;
 use Illuminate\Http\Request;
 
@@ -108,4 +109,6 @@ class CustomerController extends Controller
         $quotation = Quotation::find($id);
         return view('managecustomer.showOrder', compact('quotation', 'items'));
     }
+
+    
 }

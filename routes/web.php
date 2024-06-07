@@ -110,6 +110,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/salesorder/editOrderInfo2/{id}', [SalesOrderController::class, 'editOrderInfo2'])->name('salesorder.editOrderInfo2');
 	Route::post('/salesorder/updateOrderInfo2/{id}', [SalesOrderController::class, 'updateOrderInfo2'])->name('salesorder.updateOrderInfo2');
 	Route::get('/salesorder/deleteOrderItem/{id}', [SalesOrderController::class, 'deleteOrderItem'])->name('salesorder.deleteOrderItem');
+	// Route::get('/salesorder/print/{id}', [SalesOrderController::class, 'print'])->name('salesorder.print');
+	Route::get('salesorder/print/{type}/{id}', [SalesOrderController::class, 'print'])->name('salesorder.print');
 	
 	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');

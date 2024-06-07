@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\CustomerOrderItem;
 use App\Models\Item;
 use App\Models\Quotation;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -266,5 +267,33 @@ class SalesOrderController extends Controller
         $quotation->update(['amount' => $amount]);
 
         return redirect()->route('salesorder.show', $item->quotation_id);
+    }
+
+    public function print($type, $id)
+    {
+        $quotation = Quotation::findOrFail($id);
+        $items = Item::all();
+        
+        $view = '';
+
+        switch ($type) {
+            case 'quotation':
+                $view = 'managesalesorder.print_quotation';
+                break;
+            case 'invoice':
+                $view = 'managesalesorder.print_invoice';
+                break;
+            case 'delivery_order':
+                $view = 'managesalesorder.print_delivery_order';
+                break;
+            case 'sales_order':
+                $view = 'managesalesorder.print_sales_order';
+                break;
+            default:
+                abort(404);
+        }
+
+        $pdf = PDF::loadView($view, compact('quotation', 'items'));
+        return $pdf->stream($type . '.pdf');
     }
 }
