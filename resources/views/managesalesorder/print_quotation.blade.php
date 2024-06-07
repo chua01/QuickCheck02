@@ -12,7 +12,7 @@
         .container {
             max-width: 800px;
             margin: auto;
-            padding: 20px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
@@ -22,22 +22,26 @@
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .header, .footer {
             text-align: center;
         }
-        .details, .items {
+        .details, .items, .summary-table {
             width: 100%;
-            margin: 20px 0;
+            margin: 10px 0;
             border-collapse: collapse;
+            font-size: 12px;
         }
-        .details th, .details td, .items th, .items td {
+        .details th, .details td, .items th, .items td, .summary-table th, .summary-table td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 5px;
         }
-        .details th, .items th {
+        .details th, .items th, .summary-table th {
             background-color: #f9f9f9;
+        }
+        .details table, .items table{
+            width: 100%;
         }
         .items th {
             text-align: left;
@@ -48,95 +52,111 @@
         .items td.item-name {
             text-align: left;
         }
-        .totals {
-            margin: 20px 0;
-            text-align: right;
-        }
-        .totals p {
-            margin: 5px 0;
-        }
-        .customer-info, .your-info {
-            font-size: 12px;
+        .company-info, .client-info {
+            font-size: 10px;
             width: 45%;
             display: inline-block;
             vertical-align: top;
         }
-        .your-info {
-            margin-right: 5%;
+        .client-info {
+            text-align: right;
         }
-        .totals {
-            text-align: left;
+        .summary {
+            margin: 10px 0;
+            text-align: right;
+        }
+        .summary p {
+            margin: 5px 0;
         }
         .section-title {
             font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .summary-table-container {
+            text-align: right;
+            width: 100%;
+        }
+        .summary-table {
+            width: 40%;
+            margin-left: auto;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Quotation</h1>
-            <p>C K S Trading</p>
+            <h1>QUOTATION</h1>
         </div>
-        <div class="your-info">
-            <h2 class="section-title">Issuer Details</h2>
-            <p>Name: C K S Trading</p>
-            <p>Email: info@ckstrading.com</p>
-            <p>Contact: +123456789</p>
-            <p>Address: 123 Street Name, City, State, ZIP</p>
-            <p>Quote Date: {{ $quotation->date }}</p>
+        <div class="company-info">
+            <h2 class="section-title">C K S Trading</h2>
+            <p>Your Business Address</p>
+            <p>City</p>
+            <p>Country</p>
+            <p>Postal</p>
         </div>
-        <div class="customer-info">
-            <h2 class="section-title">Recipient Information</h2>
-            <p>Name: {{ $quotation->customer->name }}</p>
-            <p>Email: {{ $quotation->customer->email }}</p>
-            <p>Contact: {{ $quotation->customer->contact->first()->contactnumber }}</p>
-            <p>Billing Address:</p>
+        <div class="client-info">
+            <h2 class="section-title">BILL TO:</h2>
+            <p>{{ $quotation->customer->name }}</p>
             <p>{{ $quotation->customer->address->location }}</p>
             <p>{{ $quotation->customer->address->code }}</p>
             <p>{{ $quotation->customer->address->street }}</p>
             <p>{{ $quotation->customer->address->state }}</p>
         </div>
-        @if($quotation->deliveryaddress)
-        <div class="customer-info">
-            <h2 class="section-title">Delivery Address</h2>
-            <p>{{ $quotation->deliveryaddress->location }}</p>
-            <p>{{ $quotation->deliveryaddress->code }}</p>
-            <p>{{ $quotation->deliveryaddress->street }}</p>
-            <p>{{ $quotation->deliveryaddress->state }}</p>
-        </div>
-        @endif
-        <h2 class="section-title">Items</h2>
-        <table class="items">
-            <thead>
+        <div class="details">
+            <table>
                 <tr>
-                    <th class="item-name">Item Name</th>
-                    <th>Unit Price (RM)</th>
-                    <th>Quantity</th>
-                    <th>Total (RM)</th>
+                    <th>QUOTATION NO #</th>
+                    <th>DATE</th>
+                    <th>AMOUNT DUE</th>
                 </tr>
-            </thead>
-            <tbody>
+                <tr>
+                    <td>{{ $quotation->id }}</td>
+                    <td>{{ $quotation->date }}</td>
+                    <td>RM {{ number_format($quotation->amount, 2) }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="items">
+            <h2 class="section-title">ITEMS</h2>
+            <table>
+                <tr>
+                    <th>ITEMS</th>
+                    <th>DESCRIPTION</th>
+                    <th>QUANTITY</th>
+                    <th>PRICE</th>
+                    <th>AMOUNT</th>
+                </tr>
                 @foreach($quotation->customeritem as $item)
                     <tr>
                         <td class="item-name">{{ $item->item->name }}</td>
-                        <td>{{ number_format($item->amount, 2) }}</td>
+                        <td>{{ $item->item->description }}</td>
                         <td>{{ $item->quantity }}</td>
+                        <td>{{ number_format($item->amount, 2) }}</td>
                         <td>{{ number_format($item->quantity * $item->amount, 2) }}</td>
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
-        <div class="totals">
-            <h2 class="section-title">Summary</h2>
-            <p>Items Total (RM): {{ number_format($quotation->amount / 1.06 + $quotation->discount - $quotation->extra_fee, 2) }}</p>
-            <p>Extra Fee (RM): {{ number_format($quotation->extra_fee, 2) }}</p>
-            <p>Total before discount (RM): {{ number_format($quotation->amount / 1.06 + $quotation->discount, 2) }}</p>
-            <p>Discount (RM): -{{ number_format($quotation->discount, 2) }}</p>
-            <p>Tax (RM): {{ number_format($quotation->amount / 1.06 * 0.06, 2) }}</p>
-            <h3>Amount Charged (RM): {{ number_format($quotation->amount, 2) }}</h3>
+            </table>
+        </div>
+        <div class="summary-table-container">
+            <table class="summary-table">
+                <tr>
+                    <th>SUB-TOTAL</th>
+                    <td>RM {{ number_format($quotation->amount / 1.06 + $quotation->discount - $quotation->extra_fee, 2) }}</td>
+                </tr>
+                <tr>
+                    <th>TAX RATE</th>
+                    <td>6%</td>
+                </tr>
+                <tr>
+                    <th>TAX</th>
+                    <td>RM {{ number_format($quotation->amount / 1.06 * 0.06, 2) }}</td>
+                </tr>
+                <tr>
+                    <th>TOTAL</th>
+                    <td>RM {{ number_format($quotation->amount, 2) }}</td>
+                </tr>
+            </table>
         </div>
         <div class="footer">
             <p>Thank you for your business!</p>
