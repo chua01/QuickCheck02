@@ -27,5 +27,10 @@ class Item extends Model
     {
         return $this->belongsToMany(Tag::class, 'tag_items');
     }
+
+    // public function itemFlow()
+    // {
+
+    // }
     
 }

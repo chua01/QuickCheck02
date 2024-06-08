@@ -28,6 +28,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemSupplierController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Models\PurchaseOrder;
@@ -119,6 +120,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
 	Route::post('/save-permanent', [SalesOrderController::class, 'savePermanently'])->name('save.permanent');
 	
+	Route::get('/report', [ReportController::class, 'report'])->name('report');
 	//purchase updrder
 	Route::get('/purchaseorder', [PurchaseOrderController::class, 'index'])->name('purchaseorder');
 	Route::get('/purchaseorder/create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');

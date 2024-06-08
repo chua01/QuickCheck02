@@ -8,17 +8,18 @@
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
-                  {{ $error }}
+                    <li>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
-    @endif
+        @endif
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -37,7 +38,7 @@
                                             <form method="POST" action="{{ route('salesorder.updateStatus', ['id' => $quotation->id]) }}">
                                                 @csrf
                                                 <input type="hidden" name="current_status" value="{{ $quotation->status }}">
-                                                <select name="status" class="form-control" onchange="this.form.submit()">
+                                                <select name="status" class="form-control" onchange="this.form.submit()" {{ ($quotation->status == 'delivered' || $quotation->status == 'complete' || $quotation->status == 'canceled') ? 'disabled' : '' }}>
                                                     <option value="draft" {{ $quotation->status == 'draft' ? 'selected' : '' }}>Draft</option>
                                                     <option value="accepted" {{ $quotation->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
                                                     <option value="canceled" {{ $quotation->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
@@ -66,8 +67,10 @@
                                     </div>
                                     <div class="col-md-6 d-flex flex-column justify-content-between">
                                         <div class="d-flex justify-content-end mb-3">
-                                            <a href="{{ route('salesorder.editOrderInfo1', ['id' => $quotation->id]) }}" class="btn btn-info">Edit</a>
-                                            &nbsp;
+                                            @if ($quotation->status != 'delivered' && $quotation->status != 'complete')
+                                                <a href="{{ route('salesorder.editOrderInfo1', ['id' => $quotation->id]) }}" class="btn btn-info">Edit</a>
+                                                &nbsp;
+                                            @endif
                                             <a href="{{ route('salesorder') }}" class="btn btn-success">Back</a>
                                         </div>
                                         @if($quotation->deliveryaddress !== null)
@@ -99,7 +102,9 @@
                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantities</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Amount</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                    <button type="submit" class="btn btn-success">Update</button>
+                                                    @if ($quotation->status != 'delivered' && $quotation->status != 'complete')
+                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                    @endif
                                                 </th>
                                             </tr>
                                         </thead>
@@ -109,7 +114,7 @@
                                                     <td>
                                                         <div class="d-flex px-3 py-1">
                                                             <div class="d-flex flex-column justify-content-center">
-                                                                <select name="orderitem[{{ $orderitem->id }}][id]" class="form-control">
+                                                                <select name="orderitem[{{ $orderitem->id }}][id]" class="form-control" {{ ($quotation->status == 'delivered' || $quotation->status == 'complete') ? 'disabled' : '' }}>
                                                                     <option value="{{ $orderitem->item->id }}">{{ $orderitem->item->name }} ( {{ $orderitem->item->unit }} )</option>
                                                                     @foreach($items as $item)
                                                                         <option value="{{ $item->id }}">{{ $item->name }} ( {{ $item->unit }} )</option>
@@ -120,13 +125,13 @@
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control no-border-bottom" placeholder="0.00"
-                                                            value="{{ $orderitem->amount }}" name="orderitem[{{ $orderitem->id }}][price]">
+                                                            value="{{ $orderitem->amount }}" name="orderitem[{{ $orderitem->id }}][price]" {{ ($quotation->status == 'delivered' || $quotation->status == 'complete') ? 'disabled' : '' }}>
                                                     </td>
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <input type="number" class="form-control no-border-bottom" style="text-align: right;"
-                                                                    value="{{ $orderitem->quantity }}" name="orderitem[{{ $orderitem->id }}][quantity]" placeholder="0">
+                                                                    value="{{ $orderitem->quantity }}" name="orderitem[{{ $orderitem->id }}][quantity]" placeholder="0" {{ ($quotation->status == 'delivered' || $quotation->status == 'complete') ? 'disabled' : '' }}>
                                                             </div>
                                                             <div class="col-4">
                                                                 <p class="text-sm mb-0 h6">{{ $orderitem->item->unit }}</p>
@@ -137,56 +142,60 @@
                                                         <p class="text-sm font-weight-bold mb-0">RM {{ $orderitem->quantity * $orderitem->amount }}</p>
                                                     </td>
                                                     <td class="align-middle text-end">
-                                                        <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                            <a href="{{ route('salesorder.deleteOrderItem', ['id' => $orderitem->id]) }}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
-                                                        </div>
+                                                        @if ($quotation->status != 'delivered' && $quotation->status != 'complete')
+                                                            <div class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                                <a href="{{ route('salesorder.deleteOrderItem', ['id' => $orderitem->id]) }}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                            </div>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
                                     </table>
                                 </form>
-                                <form method="POST" action="{{ route('salesorder.addItem', ['id' => $quotation->id]) }}" enctype="multipart/form-data">
-                                    @csrf
-                                    <table class="table align-items-center mb-0">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex px-3 py-1">
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <select name="orderitem" class="form-control">
-                                                                <option value="">no item selected</option>
-                                                                @foreach($items as $item)
-                                                                    <option value="{{ $item->id }}">{{ $item->name }} ( {{ $item->unit }} )</option>
-                                                                @endforeach
-                                                            </select>
+                                @if ($quotation->status != 'delivered' && $quotation->status != 'complete')
+                                    <form method="POST" action="{{ route('salesorder.addItem', ['id' => $quotation->id]) }}" enctype="multipart/form-data">
+                                        @csrf
+                                        <table class="table align-items-center mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex px-3 py-1">
+                                                            <div class="d-flex flex-column justify-content-center">
+                                                                <select name="orderitem" class="form-control">
+                                                                    <option value="">no item selected</option>
+                                                                    @foreach($items as $item)
+                                                                        <option value="{{ $item->id }}">{{ $item->name }} ( {{ $item->unit }} )</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control no-border-bottom" placeholder="0.00" value="0.00" name="price">
-                                                </td>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <input type="number" class="form-control no-border-bottom" style="text-align: right;" value="0" name="quantity" placeholder="0">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control no-border-bottom" placeholder="0.00" value="0.00" name="price">
+                                                    </td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <input type="number" class="form-control no-border-bottom" style="text-align: right;" value="0" name="quantity" placeholder="0">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <p class="text-sm mb-0 h6"></p>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-4">
-                                                            <p class="text-sm mb-0 h6"></p>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <p class="text-sm font-weight-bold mb-0"></p>
+                                                    </td>
+                                                    <td class="align-middle text-end">
+                                                        <div class="d-flex px-3 py-1 justify-content-center align-items-center">
+                                                            <button type="submit" class="btn btn-success">Add</button>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <p class="text-sm font-weight-bold mb-0"></p>
-                                                </td>
-                                                <td class="align-middle text-end">
-                                                    <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                        <button type="submit" class="btn btn-success">Add</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </form>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                @endif
                             </div>
 
                             <div class="card">
@@ -222,7 +231,9 @@
                                         </table>
                                     </div>
                                     <div class="col-8 text-end">
-                                        <a href="{{ route('salesorder.editOrderInfo2', ['id' => $quotation->id]) }}" class="btn btn-info">Edit</a>
+                                        @if ($quotation->status != 'delivered' && $quotation->status != 'complete')
+                                            <a href="{{ route('salesorder.editOrderInfo2', ['id' => $quotation->id]) }}" class="btn btn-info">Edit</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

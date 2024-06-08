@@ -16,4 +16,9 @@ class ItemFlow extends Model
         'description',
         'quantity',
     ];
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }
