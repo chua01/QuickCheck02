@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemFlow;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderController extends Controller
 {
@@ -196,6 +198,27 @@ class PurchaseOrderController extends Controller
                 ->withInput();
         }
 
+        if ($currentStatus !== 'complete' && $newStatus === 'complete') {
+            DB::beginTransaction();
+            try {
+                foreach ($purchaseorder->orderitems as $orderitem) {
+                    $item = Item::find($orderitem->item_id);
+                    $item->quantity += $orderitem->quantity;
+                    $item->save();
+                    ItemFlow::create([
+                        'item_id' => $item->id,
+                        'inout' => 'in',
+                        'quantity' => $orderitem->quantity,
+                        'description' => 'from purchase order '.$purchaseorder->id,
+                    ]);
+                }
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // Handle the error (e.g., log it, notify the user, etc.)
+                throw $e; // Re-throw the exception if needed
+            }
+        }
         $purchaseorder->status = $newStatus;
         $purchaseorder->save();
 

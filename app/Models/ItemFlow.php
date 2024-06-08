@@ -15,6 +15,5 @@ class ItemFlow extends Model
         'inout',
         'description',
         'quantity',
-        'unit',
     ];
 }

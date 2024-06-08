@@ -17,7 +17,6 @@ return new class extends Migration
             $table->enum('inout',['in','out'])->nullable();
             $table->text('description')->nullable();
             $table->double('quantity')->nullable();
-            $table->enum('unit',['sdf','sdsdf'])->nullable();
             $table->timestamps();
         });
     }

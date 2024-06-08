@@ -7,10 +7,12 @@ use App\Models\Contact;
 use App\Models\Customer;
 use App\Models\CustomerOrderItem;
 use App\Models\Item;
+use App\Models\ItemFlow;
 use App\Models\Quotation;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderController extends Controller
 {
@@ -327,7 +329,25 @@ class SalesOrderController extends Controller
 
         // Handle the logic for updating the status and updating item quantities if needed
         if ($currentStatus !== 'delivered' && $newStatus === 'delivered') {
-            // Update item quantities here
+            DB::beginTransaction();
+            try {
+                foreach ($quotation->customerItem as $orderitem) {
+                    $item = Item::find($orderitem->item_id);
+                    $item->quantity -= $orderitem->quantity;
+                    $item->save();
+                    ItemFlow::create([
+                        'item_id' => $item->id,
+                        'inout' => 'out',
+                        'quantity' => $orderitem->quantity,
+                        'description' => 'from customer order '.$quotation->id,
+                    ]);
+                }
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // Handle the error (e.g., log it, notify the user, etc.)
+                throw $e; // Re-throw the exception if needed
+            }
         }
 
         $quotation->status = $newStatus;
