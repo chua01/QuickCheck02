@@ -112,12 +112,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/salesorder/deleteOrderItem/{id}', [SalesOrderController::class, 'deleteOrderItem'])->name('salesorder.deleteOrderItem');
 	// Route::get('/salesorder/print/{id}', [SalesOrderController::class, 'print'])->name('salesorder.print');
 	Route::get('salesorder/print/{type}/{id}', [SalesOrderController::class, 'print'])->name('salesorder.print');
-	
+	Route::post('salesorder/updateStatus/{id}', [SalesOrderController::class, 'updateStatus'])->name('salesorder.updateStatus');
+
 	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
 	Route::post('/save-permanent', [SalesOrderController::class, 'savePermanently'])->name('save.permanent');
 	
-	//purchase order
+	//purchase updrder
 	Route::get('/purchaseorder', [PurchaseOrderController::class, 'index'])->name('purchaseorder');
 	Route::get('/purchaseorder/create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');
 	Route::post('/purchaseorder/store', [PurchaseOrderController::class, 'store'])->name('purchaseorder.store');
@@ -130,6 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/purchaseorder/editOrderInfo2/{id}', [PurchaseOrderController::class, 'editOrderInfo2'])->name('purchaseorder.editOrderInfo2');
 	Route::post('/purchaseorder/updateOrderInfo2/{id}', [PurchaseOrderController::class, 'updateOrderInfo2'])->name('purchaseorder.updateOrderInfo2');
 	Route::get('/purchaseorder/deleteOrderItem/{id}', [PurchaseOrderController::class, 'deleteOrderItem'])->name('purchaseorder.deleteOrderItem');
+	Route::get('/purchaseorder/print/{id}', [PurchaseOrderController::class, 'print'])->name('purchaseorder.print');
 
 	// Route::post('/trysee2', [SalesOrderController::class, 'trysee2'])->name('trysee2');
 

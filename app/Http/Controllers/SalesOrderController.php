@@ -117,6 +117,8 @@ class SalesOrderController extends Controller
             $customer_id = $customer->id;
         }
 
+        $status = 'draft'; // Default status for new quotations
+
         if ($request->input('checkboxName') === '1') {
             $delivery_address = Address::create([
                 'location' => $request->delivery_location,
@@ -133,6 +135,7 @@ class SalesOrderController extends Controller
                 'extra_fee' => $request->extrafee,
                 'delivery_address' => $delivery_address->id,
                 'amount' => $finalAmount,
+                'status' => $status,
             ]);
         } else {
             $quotation = Quotation::create([
@@ -142,6 +145,7 @@ class SalesOrderController extends Controller
                 'discount' => $request->discount,
                 'tax' => $request->tax,
                 'extra_fee' => $request->extrafee,
+                'status' => $status,
             ]);
         }
 
@@ -158,6 +162,7 @@ class SalesOrderController extends Controller
 
         return redirect()->route('salesorder');
     }
+
 
     public function calculateTotal($items, $extra, $discount)
     {
@@ -273,7 +278,7 @@ class SalesOrderController extends Controller
     {
         $quotation = Quotation::findOrFail($id);
         $items = Item::all();
-        
+
         $view = '';
 
         switch ($type) {
@@ -295,5 +300,40 @@ class SalesOrderController extends Controller
 
         $pdf = PDF::loadView($view, compact('quotation', 'items'));
         return $pdf->stream($type . '.pdf');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $quotation = Quotation::findOrFail($id);
+        $currentStatus = $request->input('current_status');
+        $newStatus = $request->input('status');
+
+        // Define valid status transitions
+        $validTransitions = [
+            'draft' => ['accepted', 'canceled'],
+            'accepted' => ['ready', 'canceled'],
+            'ready' => ['delivered', 'canceled'],
+            'delivered' => ['complete', 'canceled'],
+            'complete' => [],
+            'canceled' => [],
+        ];
+
+        // Check if the new status is a valid transition from the current status
+        if (!in_array($newStatus, $validTransitions[$currentStatus])) {
+            return redirect()->route('salesorder.show', ['id' => $id])
+                ->withErrors(['status' => 'Invalid status transition.'])
+                ->withInput();
+        }
+
+        // Handle the logic for updating the status and updating item quantities if needed
+        if ($currentStatus !== 'delivered' && $newStatus === 'delivered') {
+            // Update item quantities here
+        }
+
+        $quotation->status = $newStatus;
+        $quotation->save();
+
+        return redirect()->route('salesorder.show', ['id' => $id])
+            ->with('success', 'Order status updated successfully.');
     }
 }

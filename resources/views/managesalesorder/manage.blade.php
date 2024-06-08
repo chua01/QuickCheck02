@@ -24,6 +24,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </thead>
@@ -48,10 +49,36 @@
                                         <td class="align-middle text-center text-sm">
                                             <p class="text-sm font-weight-bold mb-0">RM {{ $quotation->amount }}</p>
                                         </td>
+                                        <td class="align-middle text-center text-sm">
+                                            @switch($quotation->status)
+                                                @case('draft')
+                                                    <span class="badge bg-secondary text-white">Draft</span>
+                                                    @break
+                                                @case('accepted')
+                                                    <span class="badge bg-primary text-white">Accepted</span>
+                                                    @break
+                                                @case('ready')
+                                                    <span class="badge bg-info text-white">Ready</span>
+                                                    @break
+                                                @case('delivered')
+                                                    <span class="badge bg-success text-white">Delivered</span>
+                                                    @break
+                                                @case('complete')
+                                                    <span class="badge bg-success text-white">Complete</span>
+                                                    @break
+                                                @case('canceled')
+                                                    <span class="badge bg-danger text-white">Canceled</span>
+                                                    @break
+                                                @default
+                                                    <span class="badge bg-secondary text-white">Unknown</span>
+                                            @endswitch
+                                        </td>
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                                                 <a class="text-sm font-weight-bold mb-0" href="{{ route('salesorder.show', ['id' => $quotation->id]) }}">Edit</a>
-                                                <a href="#" class="text-sm font-weight-bold mb-0 ps-2" data-bs-toggle="modal" data-bs-target="#printModal" data-quotation-id="{{ $quotation->id }}">Print</a>
+                                                @if ($quotation->status !== 'canceled')
+                                                    <a href="#" class="text-sm font-weight-bold mb-0 ps-2" data-bs-toggle="modal" data-bs-target="#printModal" data-quotation-id="{{ $quotation->id }}" data-status="{{ $quotation->status }}" data-delivery="{{ $quotation->delivery }}">Print</a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -74,10 +101,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action print-option" data-doc-type="quotation">Quotation</a>
-                        <a href="#" class="list-group-item list-group-item-action print-option" data-doc-type="invoice">Invoice</a>
-                        <a href="#" class="list-group-item list-group-item-action print-option" data-doc-type="delivery_order">Delivery Order</a>
-                        <a href="#" class="list-group-item list-group-item-action print-option" data-doc-type="sales_order">Sales Order</a>
+                        <a href="#" class="list-group-item list-group-item-action print-option d-none" data-doc-type="quotation">Quotation</a>
+                        <a href="#" class="list-group-item list-group-item-action print-option d-none" data-doc-type="invoice">Invoice</a>
+                        <a href="#" class="list-group-item list-group-item-action print-option d-none" data-doc-type="delivery_order">Delivery Order</a>
+                        <a href="#" class="list-group-item list-group-item-action print-option d-none" data-doc-type="sales_order">Sales Order</a>
                     </div>
                 </div>
             </div>
@@ -88,10 +115,31 @@
         document.addEventListener('DOMContentLoaded', function () {
             var printModal = document.getElementById('printModal');
             var quotationId;
+            var status;
+            var delivery;
 
             printModal.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
                 quotationId = button.getAttribute('data-quotation-id');
+                status = button.getAttribute('data-status');
+                delivery = button.getAttribute('data-delivery');
+
+                // Hide all options initially
+                document.querySelectorAll('.print-option').forEach(function (option) {
+                    option.classList.add('d-none');
+                });
+
+                // Show options based on status and delivery
+                document.querySelector('[data-doc-type="quotation"]').classList.remove('d-none');
+                if (status !== 'draft' && status !== 'canceled') {
+                    document.querySelector('[data-doc-type="sales_order"]').classList.remove('d-none');
+                }
+                if (delivery === 'yes' && status !== 'draft' && status !== 'canceled') {
+                    document.querySelector('[data-doc-type="delivery_order"]').classList.remove('d-none');
+                }
+                if (status === 'delivered' || status === 'ready' || status === 'complete') {
+                    document.querySelector('[data-doc-type="invoice"]').classList.remove('d-none');
+                }
             });
 
             var printOptions = document.querySelectorAll('.print-option');

@@ -15,7 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->nullable();
             $table->foreignId('delivery_address')->nullable();
-            $table->enum('status', ['on going','complete'])->nullable();
+            $table->enum('status', [
+                'draft',
+                'accepted',
+                'canceled',
+                'ready',
+                'delivered',
+                'complete'
+                ])->nullable();
             $table->double('amount')->nullable();
             $table->date('date')->nullable();
             $table->double('discount')->nullable();

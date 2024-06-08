@@ -8,6 +8,7 @@ use App\Models\PurchaseOrderItem;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class PurchaseOrderController extends Controller
 {
@@ -161,5 +162,15 @@ class PurchaseOrderController extends Controller
         }
 
         return ($totalAmount - $discount + $extra) * 1.06;
+    }
+
+    public function print($id)
+    {
+        $purchaseOrder = PurchaseOrder::findOrFail($id);
+        $items = Item::all();
+        
+
+        $pdf = PDF::loadView('managepurchaseorder.print_purchase_order', compact('purchaseOrder', 'items'));
+        return $pdf->stream('managepurchaseorder.print_purchase_order' . '.pdf');
     }
 }

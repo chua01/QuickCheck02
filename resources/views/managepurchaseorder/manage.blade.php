@@ -66,7 +66,8 @@
                                         <td class="align-middle text-end">
                                             <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                                                 <a class="text-sm font-weight-bold mb-0" href="{{route('purchaseorder.show', ['id' => $purchaseorder->id])}}">Edit</a>
-                                                <p class="text-sm font-weight-bold mb-0 ps-2">Print</p>
+                                                <a class="text-sm font-weight-bold mb-0 ps-2" target="_blank" href="{{route('purchaseorder.print', ['id' => $purchaseorder->id])}}">Print</a>
+                                                {{-- <p class="text-sm font-weight-bold mb-0 ps-2">Print</p> --}}
                                             </div>
                                         </td>
                                     </tr>
