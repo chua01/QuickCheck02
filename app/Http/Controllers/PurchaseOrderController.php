@@ -44,6 +44,7 @@ class PurchaseOrderController extends Controller
             'discount' => $request->discount,
             'tax' => $request->tax,
             'extra_fee' => $request->extrafee,
+            'status' => 'ongoing'
         ]);
 
         foreach ($request->orderitem as $item) {
@@ -172,5 +173,33 @@ class PurchaseOrderController extends Controller
 
         $pdf = PDF::loadView('managepurchaseorder.print_purchase_order', compact('purchaseOrder', 'items'));
         return $pdf->stream('managepurchaseorder.print_purchase_order' . '.pdf');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // dd('ho');
+        $purchaseorder = PurchaseOrder::findOrFail($id);
+        $currentStatus = $request->input('current_status');
+        $newStatus = $request->input('status');
+
+        // Define valid status transitions
+        $validTransitions = [
+            'ongoing' => ['complete', 'canceled'],
+            'complete' => [],
+            'canceled' => [],
+        ];
+
+        // Check if the new status is a valid transition from the current status
+        if (!in_array($newStatus, $validTransitions[$currentStatus])) {
+            return redirect()->route('purchaseorder.show', ['id' => $id])
+                ->withErrors(['status' => 'Invalid status transition.'])
+                ->withInput();
+        }
+
+        $purchaseorder->status = $newStatus;
+        $purchaseorder->save();
+
+        return redirect()->route('purchaseorder.show', ['id' => $id])
+            ->with('success', 'Order status updated successfully.');
     }
 }

@@ -58,7 +58,6 @@
                                         </div>
                                         <div class="col-md-1"></div>
                                         <div class="col-md-5 text-md-end">
-                                            <button class="btn btn-primary btn-sm">Print</button>
                                             <div class="form-group">
                                                 <input type="checkbox" id="checkboxName" name="checkboxName" value="1">
                                                 <label for="checkboxName">Checkbox Label</label>

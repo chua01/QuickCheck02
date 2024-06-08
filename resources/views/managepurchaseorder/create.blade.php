@@ -57,10 +57,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-5 text-md-end">
-                                            <button class="btn btn-primary btn-sm">Print</button>
-
-                                        </div>
+                                    
                                     </div>
 
                                 </div>
@@ -71,8 +68,7 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Items
                                             </th>
                                             <th
@@ -117,9 +113,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <input id="itemPrice0" type="number"
-                                                    class="form-control no-border-bottom" placeholder="0.00"
-                                                    value="0.00" name="orderitem[0][price]" onchange="update_item_info()">
+                                                <input id="itemPrice0" type="number" class="form-control no-border-bottom"
+                                                    placeholder="0.00" value="0.00" name="orderitem[0][price]"
+                                                    onchange="update_item_info()">
 
                                             </td>
                                             <td>
@@ -152,7 +148,7 @@
                                     </tbody>
                                 </table>
                             </div>
-
+                            <br>
                             <div class="card border">
                                 <div class="card-body">
                                     <div class="row my-1">
@@ -165,7 +161,8 @@
                                                     <span class="">RM</span>
                                                 </div>
                                                 <input name="extrafee" style="text-align: right;" type="number"
-                                                    class="form-control no-border-bottom" placeholder="" onchange="update_item_info()">
+                                                    class="form-control no-border-bottom" placeholder=""
+                                                    onchange="update_item_info()">
                                             </div>
                                         </div>
 
@@ -188,7 +185,8 @@
                                                     <span class="">RM</span>
                                                 </div>
                                                 <input name="discount" style="text-align: right;" type="number"
-                                                    class="form-control no-border-bottom" placeholder="" onchange="update_item_info()">
+                                                    class="form-control no-border-bottom" placeholder=""
+                                                    onchange="update_item_info()">
                                             </div>
                                         </div>
                                     </div>
@@ -210,7 +208,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <br>
                             <button class="btn btn-primary btn-sm ms-auto" type="submit">Submit</button>
 
                         </div>
@@ -224,8 +222,6 @@
     </div>
 
     <script>
-       
-
         document.getElementById('existingsupplier').addEventListener('change', function() {
             var name = document.getElementById('name');
             var email = document.getElementById('email');

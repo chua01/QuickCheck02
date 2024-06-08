@@ -4,7 +4,23 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Add Item'])
 
     <div class="container-fluid py-4">
-        <form method="POST" action="{{route('purchaseorder.updateOrderItem', ['id' => $purchaseorder->id])}}" enctype="multipart/form-data">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('purchaseorder.updateOrderItem', ['id' => $purchaseorder->id]) }}" enctype="multipart/form-data">
             @csrf
 
             <div class="row">
@@ -12,13 +28,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex align-items-center">
-                                <p class="mb-0">New Item</p>
-                                <div class="ms-auto">
-                                    <a href=""
-                                        onclick="return confirm('Do you want to delete item? Item will be deleted permanently')"
-                                        class="btn btn-danger btn-sm ms-auto">Delete</a>
-                                    <a href="" class="btn btn-info btn-sm ms-auto">Edit</a>
-                                </div>
+                                <p class="mb-0">Order Information</p>
                             </div>
                         </div>
                         <div class="card-body">
@@ -26,6 +36,20 @@
                                 <div class="card-body border rounded-3">
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="status" class="form-control-label">Order Status</label>
+                                                <select name="status" class="form-control" id="orderStatus">
+                                                    <option value="ongoing" {{ $purchaseorder->status == 'ongoing' ? 'selected' : '' }}>Ongoing</option>
+                                                    <option value="complete" {{ $purchaseorder->status == 'complete' ? 'selected' : '' }}>Complete</option>
+                                                    <option value="canceled" {{ $purchaseorder->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="status" class="form-control-label">Order Details</label>
                                             <div class="form-group">
                                                 <p class="mb-0">{{ $purchaseorder->supplier->name }}</p>
                                                 <p class="mb-0">{{ $purchaseorder->supplier->email }}</p>
@@ -39,7 +63,9 @@
                                         </div>
                                         <div class="col-md-6 d-flex flex-column justify-content-between">
                                             <div class="d-flex justify-content-end mb-3">
-                                                <a href="{{route('purchaseorder.editOrderInfo1', ['id'=>$purchaseorder->id])}}" class="btn btn-info">Edit</a>
+                                                <a href="{{ route('purchaseorder.editOrderInfo1', ['id' => $purchaseorder->id]) }}" class="btn btn-info">Edit</a>
+                                                &nbsp;
+                                                <a href="{{ route('purchaseorder') }}" class="btn btn-success">Back</a>
                                             </div>
                                             @if($purchaseorder->deliveryaddress !== null)
                                             <div class="form-group">
@@ -58,7 +84,6 @@
                             <br>
                             <div class="row">
                                 <p>Items</p>
-                                {{-- list of order item --}}
                                 <div class="table-responsive p-0">
                                     <div id="dropdownLists"></div>
                                     <table class="table align-items-center mb-0">
@@ -79,10 +104,10 @@
                                                     <td>
                                                         <div class="d-flex px-3 py-1">
                                                             <div class="d-flex flex-column justify-content-center">
-                                                                <select name="orderitem[{{$orderitem->id}}][id]" class="form-control">
-                                                                    <option value="{{$orderitem->item->id}}">{{$orderitem->item->name}} ( {{$orderitem->item->unit}} )</option>
+                                                                <select name="orderitem[{{ $orderitem->id }}][id]" class="form-control">
+                                                                    <option value="{{ $orderitem->item->id }}">{{ $orderitem->item->name }} ( {{ $orderitem->item->unit }} )</option>
                                                                     @foreach($items as $item)
-                                                                        <option value="{{$item->id}}">{{$item->name}} ( {{$item->unit}} )</option>
+                                                                        <option value="{{ $item->id }}">{{ $item->name }} ( {{ $item->unit }} )</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -90,25 +115,25 @@
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control no-border-bottom" placeholder="0.00"
-                                                            value="{{$orderitem->amount}}" name="orderitem[{{$orderitem->id}}][price]">
+                                                            value="{{ $orderitem->amount }}" name="orderitem[{{ $orderitem->id }}][price]">
                                                     </td>
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <input type="number" class="form-control no-border-bottom" style="text-align: right;"
-                                                                    value="{{$orderitem->quantity}}" name="orderitem[{{$orderitem->id}}][quantity]" placeholder="0">
+                                                                    value="{{ $orderitem->quantity }}" name="orderitem[{{ $orderitem->id }}][quantity]" placeholder="0">
                                                             </div>
                                                             <div class="col-4">
-                                                                <p class="text-sm mb-0 h6">{{$orderitem->item->unit}}</p>
+                                                                <p class="text-sm mb-0 h6">{{ $orderitem->item->unit }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="align-middle text-center text-sm">
-                                                        <p class="text-sm font-weight-bold mb-0">RM {{$orderitem->quantity * $orderitem->amount}}</p>
+                                                        <p class="text-sm font-weight-bold mb-0">RM {{ $orderitem->quantity * $orderitem->amount }}</p>
                                                     </td>
                                                     <td class="align-middle text-end">
                                                         <div class="d-flex px-3 py-1 justify-content-center align-items-center">
-                                                            <a href="{{route('purchaseorder.deleteOrderItem', ['id' => $orderitem->id])}}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
+                                                            <a href="{{ route('purchaseorder.deleteOrderItem', ['id' => $orderitem->id]) }}" class="text-sm font-weight-bold mb-0 ps-2">Delete</a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -123,7 +148,7 @@
                                                                 <select name="orderitem" class="form-control">
                                                                     <option value="">no item selected</option>
                                                                     @foreach($items as $item)
-                                                                        <option value="{{$item->id}}">{{$item->name}} ( {{$item->unit}} )</option>
+                                                                        <option value="{{ $item->id }}">{{ $item->name }} ( {{ $item->unit }} )</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -183,17 +208,16 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="amount" class="form-control-label">Amount Charged (RM):</label></td>
-                                                        <td class="text-start">{{ number_format($purchaseorder->amount,2) }}</td>
+                                                        <td class="text-start">{{ number_format($purchaseorder->amount, 2) }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="col-8 text-end">
-                                            <a href="{{route('purchaseorder.editOrderInfo2', ['id' => $purchaseorder->id])}}" class="btn btn-info">Edit</a>
+                                            <a href="{{ route('purchaseorder.editOrderInfo2', ['id' => $purchaseorder->id]) }}" class="btn btn-info">Edit</a>
                                         </div>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -235,4 +259,18 @@
         }
     </style>
 
+    <script>
+        document.getElementById('orderStatus').addEventListener('change', function() {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "{{ route('purchaseorder.updateStatus', ['id' => $purchaseorder->id]) }}";
+            form.innerHTML = `
+                @csrf
+                <input type="hidden" name="current_status" value="{{ $purchaseorder->status }}">
+                <input type="hidden" name="status" value="${this.value}">
+            `;
+            document.body.appendChild(form);
+            form.submit();
+        });
+    </script>
 @endsection

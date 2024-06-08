@@ -113,6 +113,7 @@ Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/salesorder/print/{id}', [SalesOrderController::class, 'print'])->name('salesorder.print');
 	Route::get('salesorder/print/{type}/{id}', [SalesOrderController::class, 'print'])->name('salesorder.print');
 	Route::post('salesorder/updateStatus/{id}', [SalesOrderController::class, 'updateStatus'])->name('salesorder.updateStatus');
+	Route::post('purchaseorder/updateStatus/{id}', [PurchaseorderController::class, 'updateStatus'])->name('purchaseorder.updateStatus');
 
 	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
