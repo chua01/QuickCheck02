@@ -154,7 +154,7 @@ class DatabaseSeeder extends Seeder
                 'price1' => '25.00',
                 'price2' => '23.00',
                 'price3' => '20.00',
-                'pic' => 'public/images/hammer.jpg',
+                'pic' => 'items/hammer2.jpg',
                 'description' => 'Stainless Steel Hammer 12 inch',
                 'quantity' => '100',
                 'minlevel' => '10',
@@ -162,14 +162,14 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Screw 2 inches',
-                'price1' => '25.00',
-                'price2' => '23.00',
-                'price3' => '20.00',
-                'pic' => 'public/images/screw.webp',
+                'price1' => '10.00',
+                'price2' => '9.00',
+                'price3' => '8.00',
+                'pic' => 'items/screw.jpeg',
                 'description' => 'screw 2 inches with blah blah blah',
                 'quantity' => '100',
                 'minlevel' => '10',
-                'unit' => 'pcs',
+                'unit' => 'kg',
             ],
         ];
 
