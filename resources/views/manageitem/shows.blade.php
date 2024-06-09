@@ -163,6 +163,39 @@
                                     </div>
                                 </div>
                             </div>
+                            <br><br><p>Item Flows</p>
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Item ID</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">In/Out</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                                            {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Action</th> --}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($itemFlows as $itemFlow)
+                                        <tr>
+                                            <td>
+                                                <p class="text-sm font-weight-bold mb-0">{{$itemFlow->item_id}}</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm font-weight-bold mb-0">{{$itemFlow->inout}}</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm font-weight-bold mb-0">{{$itemFlow->description}}</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm font-weight-bold mb-0">{{$itemFlow->quantity}}</p>
+                                            </td>
+                                           
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

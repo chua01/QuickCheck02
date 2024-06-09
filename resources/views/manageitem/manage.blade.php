@@ -48,9 +48,6 @@
                                                 <h5 class="mb-0">{{ $item->quantity }} {{ $item->unit }}</h5>
                                             </div>
                                         </a>
-                                        <a class="position-absolute top-0 end-0 mt-2 me-2" href="#">
-                                            <i class="fas fa-thumbtack" style="{{ (1 == 1 ? '' : 'color: red;') }}"></i>
-                                        </a>
                                     </div>
                                 </div>
                             @endforeach

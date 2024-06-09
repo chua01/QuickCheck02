@@ -38,7 +38,8 @@
                                             <form method="POST" action="{{ route('salesorder.updateStatus', ['id' => $quotation->id]) }}">
                                                 @csrf
                                                 <input type="hidden" name="current_status" value="{{ $quotation->status }}">
-                                                <select name="status" class="form-control" onchange="this.form.submit()" {{ ($quotation->status == 'delivered' || $quotation->status == 'complete' || $quotation->status == 'canceled') ? 'disabled' : '' }}>
+
+                                                <select name="status" class="form-control" onchange="this.form.submit()"    >
                                                     <option value="draft" {{ $quotation->status == 'draft' ? 'selected' : '' }}>Draft</option>
                                                     <option value="accepted" {{ $quotation->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
                                                     <option value="canceled" {{ $quotation->status == 'canceled' ? 'selected' : '' }}>Canceled</option>

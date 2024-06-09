@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemFlow;
 use App\Models\ItemSupplier;
 use App\Models\Supplier;
 use App\Models\Tag;
@@ -50,8 +51,8 @@ class ItemController extends Controller
         $suppliers = $suppliers->reject(function ($supplier) use ($itemSupplierIds) {
             return in_array($supplier->id, $itemSupplierIds);
         });
-
-        return view('manageitem.shows', compact('item', 'suppliers', 'itemSuppliers'));
+        $itemFlows = ItemFlow::where('item_id', $id)->get();
+        return view('manageitem.shows', compact('item', 'suppliers', 'itemSuppliers','itemFlows'));
     }
 
     // public function store(Request $request)

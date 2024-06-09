@@ -55,7 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sign-in-static', [PageController::class, 'signin'])->name('sign-in-static');
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-	
+
 	// user
 	Route::post('/register', [RegisterController::class, 'store'])->name('register.perform');
 	Route::get('/user', [RegisterController::class, 'index'])->name('user');
@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
 	Route::get('/customer/show/{id}', [CustomerController::class, 'show'])->name('customer.show');
 	Route::get('/customer/showOrder/{id}', [CustomerController::class, 'showOrder'])->name('customer.showOrder');
-	
+
 	// supplier
 	Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
 	Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
@@ -94,7 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/supplier/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
 	Route::post('/supplier/update{id}', [SupplierController::class, 'update'])->name('supplier.update');
 	Route::get('/supplier/showOrder/{id}', [SupplierController::class, 'showOrder'])->name('supplier.showOrder');
-	
+
 	//item supplier
 	Route::post('/itemsupplier/store/{id}', [ItemSupplierController::class, 'store'])->name('itemSupplier.store');
 	Route::get('/itemsupplier/{id}', [ItemSupplierController::class, 'destroy'])->name('itemSupplier.destroy');
@@ -119,8 +119,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/salesorder/show/{id}', [SalesOrderController::class, 'show'])->name('salesorder.show');
 	Route::post('/save-temporary', [SalesOrderController::class, 'saveTemporarily'])->name('save.temporary');
 	Route::post('/save-permanent', [SalesOrderController::class, 'savePermanently'])->name('save.permanent');
-	
-	Route::get('/report', [ReportController::class, 'report'])->name('report');
+
+	// Route::get('/report', [ReportController::class, 'report'])->name('report');
+	// web.php
+	Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+	Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
+
 	//purchase updrder
 	Route::get('/purchaseorder', [PurchaseOrderController::class, 'index'])->name('purchaseorder');
 	Route::get('/purchaseorder/create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');
